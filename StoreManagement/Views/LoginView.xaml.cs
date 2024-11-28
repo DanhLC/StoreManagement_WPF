@@ -29,7 +29,7 @@ namespace StoreManagement.Views
                 //passwordBox.Dispatcher.BeginInvoke(new Action(() =>
                 //{
                 //    passwordBox.Select(caretPosition, 0);
-                //}));
+                //})); 
             }
         }
         private void PasswordBox_TextChanged(object sender, TextChangedEventArgs e)
