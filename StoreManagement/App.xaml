@@ -1,0 +1,11 @@
+﻿<Application x:Class="StoreManagement.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:StoreManagement"
+             xmlns:utilities="clr-namespace:StoreManagement.Utilities"
+             StartupUri="Views/LoginView.xaml">
+    <Application.Resources>
+        <utilities:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <utilities:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Application.Resources>
+</Application>

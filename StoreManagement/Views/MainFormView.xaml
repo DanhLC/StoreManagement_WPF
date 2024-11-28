@@ -1,0 +1,14 @@
+﻿<Window x:Class="StoreManagement.Views.MainFormView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StoreManagement.Views"
+        mc:Ignorable="d"
+        Title="MainFormView" Height="450" Width="800">
+    <Grid>
+        <TextBlock Text="Welcome to Store Management System!" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="24" FontWeight="Bold"/>
+    </Grid>
+</Window>
