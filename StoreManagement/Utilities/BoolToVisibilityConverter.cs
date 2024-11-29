@@ -9,10 +9,12 @@ namespace StoreManagement.Utilities
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool boolValue = (bool)value;
+
             if (parameter != null && parameter.ToString() == "Invert")
             {
                 boolValue = !boolValue;
             }
+
             return boolValue ? Visibility.Visible : Visibility.Collapsed;
         }
 

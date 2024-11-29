@@ -11,6 +11,8 @@ namespace StoreManagement.Views
     /// </summary>
     public partial class LoginView : Window
     {
+        private bool _isUpdatingPassword = false;
+
         public LoginView()
         {
             InitializeComponent();
@@ -21,29 +23,24 @@ namespace StoreManagement.Views
         {
             if (DataContext is UserViewModel viewModel && sender is PasswordBox passwordBox)
             {
-                //var caretPosition = passwordBox.SelectionStart;
-
+                viewModel.Password = passwordBox.Password;
                 viewModel.PlainPassword = passwordBox.Password;
-                viewModel.SecurePassword = passwordBox.Password;
-
-                //passwordBox.Dispatcher.BeginInvoke(new Action(() =>
-                //{
-                //    passwordBox.Select(caretPosition, 0);
-                //})); 
             }
         }
-        private void PasswordBox_TextChanged(object sender, TextChangedEventArgs e)
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (DataContext is UserViewModel viewModel && sender is TextBox textBox)
+            if (DataContext is UserViewModel viewModel)
             {
-                var caretPosition = tbPassword.SelectionStart;
+                pbPassword.Password = viewModel.PlainPassword;
+            }
+        }
 
-                viewModel.PlainPassword = textBox.Text;
-
-                if (!viewModel.IsPasswordVisible && pbPassword != null)
-                {
-                    pbPassword.Password = textBox.Text;
-                }
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is UserViewModel viewModel)
+            {
+                pbPassword.Password = viewModel.PlainPassword;
             }
         }
 

@@ -34,12 +34,12 @@ namespace StoreManagement.ViewModels
 
         public string SecurePassword { get; set; }
 
-        public string VisiblePassword => IsPasswordVisible ? Password : new string('*', Password?.Length ?? 0);
-
         public IRelayCommand LoginCommand => new AsyncRelayCommand(LoginAsync);
 
         private async Task LoginAsync()
         {
+            if (IsPasswordVisible && Password != PlainPassword) Password = PlainPassword;
+
             var users = await _userRepository.GetAllAsync();
             var user = users.FirstOrDefault(u => u.Username == Username && u.Password == Password);
 
