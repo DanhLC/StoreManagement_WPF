@@ -6,6 +6,7 @@ namespace StoreManagement.Data
     public class AppDbContext : DbContext
     {
         public DbSet<Users> Users{ get; set; }
+        public DbSet<Config> Config { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

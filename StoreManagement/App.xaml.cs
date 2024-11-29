@@ -26,6 +26,7 @@ namespace StoreManagement
         {
             services.AddDbContext<AppDbContext>();
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IConfigRepository, ConfigRepository>();
             services.AddScoped<UserViewModel>();
         }
     }

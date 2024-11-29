@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using StoreManagement.Services;
 using StoreManagement.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,12 +12,18 @@ namespace StoreManagement.Views
     /// </summary>
     public partial class LoginView : Window
     {
-        private bool _isUpdatingPassword = false;
-
         public LoginView()
         {
             InitializeComponent();
-            DataContext = App.ServiceProvider.GetService<UserViewModel>();
+
+            var userViewModel = App.ServiceProvider.GetService<UserViewModel>();
+            DataContext = userViewModel;
+            userViewModel.OnLoginSuccess += () =>
+            {
+                var mainForm = new MainFormView();
+                mainForm.Show();
+                Close();
+            };
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

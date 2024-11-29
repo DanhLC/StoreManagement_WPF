@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using StoreManagement.Models;
 using StoreManagement.Services;
-using StoreManagement.Views;
 using System.Windows;
 
 namespace StoreManagement.ViewModels
@@ -10,11 +9,41 @@ namespace StoreManagement.ViewModels
     public partial class UserViewModel : ObservableObject
     {
         private readonly IRepository<Users> _userRepository;
+        private readonly IConfigRepository _configRepository;
+        private bool _loginSuccessTriggered;
+        private event Action _onLoginSuccess;
 
-        public UserViewModel(IRepository<Users> userRepository)
+        public event Action OnLoginSuccess
+        {
+            add
+            {
+                if (_loginSuccessTriggered)
+                {
+                    value.Invoke();
+                }
+                else
+                {
+                    _onLoginSuccess += value;
+                }
+            }
+            remove => _onLoginSuccess -= value;
+        }
+
+        public UserViewModel(
+            IRepository<Users> userRepository,
+            IConfigRepository configRepository)
         {
             _userRepository = userRepository;
+            _configRepository = configRepository;
             IsPasswordVisible = false;
+
+            _ = InitializeAsync();
+        }
+
+        private async Task InitializeAsync()
+        {
+            await LoadLastLoginAsync();
+            await ApplyQuickLoginAsync();
         }
 
         [ObservableProperty]
@@ -45,15 +74,9 @@ namespace StoreManagement.ViewModels
 
             if (user != null)
             {
-                var mainForm = new MainFormView();
-                SessionManager.Instance.UserId = user.Id;
-                SessionManager.Instance.Username = user.Username;
-                SessionManager.Instance.FullName = user.FullName;
-                SessionManager.Instance.Role = user.Role;
-                SessionManager.Instance.Email = user.Email;
-
-                mainForm.Show();
-                CloseCurrentWindow();
+                SetUserSessionValue(user);
+                _loginSuccessTriggered = true;
+                _onLoginSuccess?.Invoke();
             }
             else
             {
@@ -61,15 +84,38 @@ namespace StoreManagement.ViewModels
             }
         }
 
-        private void CloseCurrentWindow()
+        private async Task LoadLastLoginAsync()
         {
-            foreach (var window in Application.Current.Windows)
+            var lastUsername = await _configRepository.GetByKeyAsync("LastLoggedInUsername");
+
+            Username = lastUsername?.Value ?? string.Empty;
+        }
+
+        public async Task ApplyQuickLoginAsync()
+        {
+            var applyQuickLogin = await _configRepository.GetByKeyAsync("ApplyQuickLogin");
+
+            if (applyQuickLogin != null && bool.TryParse(applyQuickLogin.Value, out bool isQuickLoginEnabled) && isQuickLoginEnabled)
             {
-                if (window is Views.LoginView loginView)
+                var users = await _userRepository.GetAllAsync();
+                var user = users.FirstOrDefault(u => u.Username == Username);
+
+                if (user != null)
                 {
-                    loginView.Close();
+                    SetUserSessionValue(user);
+                    _loginSuccessTriggered = true;
+                    _onLoginSuccess?.Invoke();
                 }
             }
+        }
+
+        private void SetUserSessionValue(Users user)
+        {
+            SessionManager.Instance.UserId = user.Id;
+            SessionManager.Instance.Username = user.Username;
+            SessionManager.Instance.FullName = user.FullName;
+            SessionManager.Instance.Role = user.Role;
+            SessionManager.Instance.Email = user.Email;
         }
     }
 }
