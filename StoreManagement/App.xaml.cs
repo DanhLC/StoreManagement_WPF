@@ -2,6 +2,7 @@
 using StoreManagement.Data;
 using StoreManagement.Services;
 using StoreManagement.ViewModels;
+using StoreManagement.Views;
 using System.Windows;
 
 namespace StoreManagement
@@ -19,6 +20,15 @@ namespace StoreManagement
             ConfigureServices(serviceCollection);
 
             ServiceProvider = serviceCollection.BuildServiceProvider();
+            //ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            var loginView = ServiceProvider.GetService<LoginView>();
+
+            if (MainWindow is LoginView)
+            {
+                MainWindow = loginView;
+                loginView.Show();
+            }
+
             base.OnStartup(e);
         }
 
@@ -28,6 +38,9 @@ namespace StoreManagement
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IConfigRepository, ConfigRepository>();
             services.AddScoped<UserViewModel>();
+
+            services.AddTransient<LoginView>();
+            services.AddTransient<MainFormView>();
         }
     }
 }

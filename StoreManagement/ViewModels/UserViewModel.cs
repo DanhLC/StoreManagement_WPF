@@ -7,27 +7,18 @@ namespace StoreManagement.ViewModels
 {
     public partial class UserViewModel : ObservableObject
     {
+        #region Fields
+
         private readonly IRepository<Users> _userRepository;
         private readonly IConfigRepository _configRepository;
+
         private bool _loginSuccessTriggered;
-        private event Action _onLoginSuccess;
+        private bool _focusPasswordTriggered;
+        public Action<string> UIAction { get; set; }
 
-        public event Action OnLoginSuccess
-        {
-            add
-            {
-                if (_loginSuccessTriggered)
-                {
-                    value.Invoke();
-                }
-                else
-                {
-                    _onLoginSuccess += value;
-                }
-            }
-            remove => _onLoginSuccess -= value;
-        }
+        #endregion
 
+        #region Constructors
         public UserViewModel(
             IRepository<Users> userRepository,
             IConfigRepository configRepository)
@@ -39,11 +30,19 @@ namespace StoreManagement.ViewModels
             _ = InitializeAsync();
         }
 
+        #endregion
+
+        #region Initialization
+
         private async Task InitializeAsync()
         {
             await LoadInformation();
             await ApplyQuickLoginAsync();
         }
+
+        #endregion
+
+        #region Properties
 
         [ObservableProperty]
         private string username;
@@ -68,7 +67,15 @@ namespace StoreManagement.ViewModels
 
         public string SecurePassword { get; set; }
 
+        #endregion
+
+        #region Commands
+
         public IRelayCommand LoginCommand => new AsyncRelayCommand(LoginAsync);
+
+        #endregion
+
+        #region Task
 
         private async Task LoginAsync()
         {
@@ -81,7 +88,7 @@ namespace StoreManagement.ViewModels
             {
                 SetUserSessionValue(user);
                 _loginSuccessTriggered = true;
-                _onLoginSuccess?.Invoke();
+                UIAction?.Invoke("LoginSuccess");
             }
             else
             {
@@ -96,6 +103,13 @@ namespace StoreManagement.ViewModels
             var loginLogo = await _configRepository.GetByKeyAsync("LoginLogo");
 
             Username = lastUsername?.Value ?? string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(Username))
+            {
+                _focusPasswordTriggered = true;
+                UIAction?.Invoke("FocusPasswordBox");
+            }
+
             LoginTitle = loginTitle?.Value?? "Demo title";
             LoginLogo = !string.IsNullOrEmpty(loginLogo?.Value) ? string.Format("/Images/{0}", loginLogo.Value) : "/Images/default-login-logo.png";
         }
@@ -113,11 +127,14 @@ namespace StoreManagement.ViewModels
                 {
                     SetUserSessionValue(user);
                     _loginSuccessTriggered = true;
-                    _onLoginSuccess?.Invoke();
+                    UIAction?.Invoke("LoginSuccess");
                 }
             }
         }
 
+        #endregion
+
+        #region Set User Session Value
         private void SetUserSessionValue(Users user)
         {
             SessionManager.Instance.UserId = user.Id;
@@ -125,6 +142,22 @@ namespace StoreManagement.ViewModels
             SessionManager.Instance.FullName = user.FullName;
             SessionManager.Instance.Role = user.Role;
             SessionManager.Instance.Email = user.Email;
+        }
+
+        #endregion
+
+        public void RegisterUIAction(Action<string> uiAction)
+        {
+            UIAction = uiAction;
+
+            if (_loginSuccessTriggered)
+            {
+                UIAction.Invoke("LoginSuccess");
+            }
+            else if (_focusPasswordTriggered)
+            {
+                UIAction.Invoke("FocusPasswordBox");
+            }
         }
     }
 }

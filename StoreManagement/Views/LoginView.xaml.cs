@@ -17,12 +17,21 @@ namespace StoreManagement.Views
 
             var userViewModel = App.ServiceProvider.GetService<UserViewModel>();
             DataContext = userViewModel;
-            userViewModel.OnLoginSuccess += () =>
+            userViewModel.RegisterUIAction(action =>
             {
-                var mainForm = new MainFormView();
-                mainForm.Show();
-                Close();
-            };
+                switch (action)
+                {
+                    case "FocusPasswordBox":
+                        pbPassword.Focus();
+                        break;
+                    case "LoginSuccess":
+                        var mainForm = App.ServiceProvider.GetService<MainFormView>();
+                        Application.Current.MainWindow = mainForm;
+                        mainForm.Show();
+                        Close();
+                        break;
+                }
+            });
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
