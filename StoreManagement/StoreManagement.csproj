@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="Images\back-image.jpg" />
+    <None Remove="Images\default-login-logo.png" />
     <None Remove="Images\invoice-logo.png" />
     <None Remove="Images\key-icon.png" />
     <None Remove="Images\logo-image.jpg" />
@@ -34,6 +35,9 @@
 
   <ItemGroup>
     <Resource Include="Images\back-image.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\default-login-logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\invoice-logo.png">

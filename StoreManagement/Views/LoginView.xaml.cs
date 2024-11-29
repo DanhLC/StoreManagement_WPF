@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StoreManagement.Services;
 using StoreManagement.ViewModels;
 using System.Windows;
 using System.Windows.Controls;

@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using StoreManagement.Models;
 using StoreManagement.Services;
-using System.Windows;
 
 namespace StoreManagement.ViewModels
 {
@@ -42,7 +41,7 @@ namespace StoreManagement.ViewModels
 
         private async Task InitializeAsync()
         {
-            await LoadLastLoginAsync();
+            await LoadInformation();
             await ApplyQuickLoginAsync();
         }
 
@@ -60,6 +59,12 @@ namespace StoreManagement.ViewModels
 
         [ObservableProperty]
         private string plainPassword;
+
+        [ObservableProperty]
+        private string loginTitle;
+
+        [ObservableProperty]
+        private string loginLogo;
 
         public string SecurePassword { get; set; }
 
@@ -84,11 +89,15 @@ namespace StoreManagement.ViewModels
             }
         }
 
-        private async Task LoadLastLoginAsync()
+        private async Task LoadInformation()
         {
             var lastUsername = await _configRepository.GetByKeyAsync("LastLoggedInUsername");
+            var loginTitle = await _configRepository.GetByKeyAsync("LoginTitle");
+            var loginLogo = await _configRepository.GetByKeyAsync("LoginLogo");
 
             Username = lastUsername?.Value ?? string.Empty;
+            LoginTitle = loginTitle?.Value?? "Demo title";
+            LoginLogo = !string.IsNullOrEmpty(loginLogo?.Value) ? string.Format("/Images/{0}", loginLogo.Value) : "/Images/default-login-logo.png";
         }
 
         public async Task ApplyQuickLoginAsync()

@@ -118,7 +118,7 @@
                             Grid.Row="1"
                             Orientation="Vertical"
                             Margin="0,35,0,0">
-                    <Image Source="/Images/invoice-logo.png"
+                    <Image Source="{Binding LoginLogo, UpdateSourceTrigger=PropertyChanged}"
                            Width="100" Height="100"/>
                     <TextBlock Text="Login"
                                Foreground="White"
@@ -126,7 +126,7 @@
                                FontWeight="Medium"
                                FontFamily="Arial"
                                HorizontalAlignment="Center"/>
-                    <TextBlock Text="Phu Cuong Veterinary and Aquatic Medicine Store"
+                    <TextBlock Text="{Binding LoginTitle, UpdateSourceTrigger=PropertyChanged}"
                                Foreground="LightGray"
                                FontSize="12"
                                FontWeight="Medium"
