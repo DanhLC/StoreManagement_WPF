@@ -23,5 +23,34 @@ namespace StoreManagement.Views
         {
             InitializeComponent();
         }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed) DragMove();
+        }
+
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void btnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                // Nếu cửa sổ đang Maximized, chuyển về Normal
+                WindowState = WindowState.Normal;
+            }
+            else
+            {
+                // Nếu cửa sổ đang Normal, chuyển sang Maximized
+                WindowState = WindowState.Maximized;
+            }
+        }
     }
 }

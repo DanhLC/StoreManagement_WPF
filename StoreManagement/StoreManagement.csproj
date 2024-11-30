@@ -12,6 +12,8 @@
   <ItemGroup>
     <None Remove="Images\back-image.jpg" />
     <None Remove="Images\default-login-logo.png" />
+    <None Remove="Images\flag-us.png" />
+    <None Remove="Images\flag-vie.png" />
     <None Remove="Images\invoice-logo.png" />
     <None Remove="Images\key-icon.png" />
     <None Remove="Images\logo-image.jpg" />
@@ -41,6 +43,12 @@
     <Resource Include="Images\default-login-logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\flag-us.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\flag-vie.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\invoice-logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -53,13 +61,7 @@
     <Resource Include="Images\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Images\flag-uk.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Images\user-icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\flag-vie.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

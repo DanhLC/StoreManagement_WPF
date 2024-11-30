@@ -11,7 +11,8 @@
         Background="Transparent"
         AllowsTransparency="True"
         Icon="/Images/app_icon.ico"
-        Title="LoginView" Height="600" Width="800">
+        Title="LoginView" Height="600" Width="800"
+        MouseDown="Window_MouseDown">
 
     <Border CornerRadius="12">
         <Border.Background>
@@ -258,11 +259,13 @@
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 Margin="0,15,0,0">
+                        
                         <TextBlock Text="Forgot Password?"
                                Foreground="DarkGray"
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Arial"/>
+                        
                         <TextBlock Text="Reset"
                                Foreground="White"
                                FontSize="12"
@@ -271,6 +274,25 @@
                                Cursor="Hand"
                                Margin="8,0,0,0"/>
                     </StackPanel>
+                    <!--<StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="0,15,0,0">
+                        <Image Source="/Images/flag-us.png"
+                                    Width="24"
+                                    Height="25"
+                                    Cursor="Hand"
+                                    Tag="en-US"
+                                    ToolTip="English (US)"
+                                    Margin="0,0,8,0"
+                                    MouseLeftButtonUp="Flag_Click"/>
+                        <Image Source="/Images/flag-vie.png"
+                                    Width="24"
+                                    Height="25"
+                                    Cursor="Hand"
+                                    ToolTip="Vietnamese (VN)"
+                                    Tag="vi-VN"  
+                                    MouseLeftButtonUp="Flag_Click"/>
+                    </StackPanel>-->                    
                 </StackPanel>
             </Grid>
         </Border>
