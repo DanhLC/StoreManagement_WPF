@@ -4,7 +4,7 @@ namespace StoreManagement.Services
 {
     public class SessionManager : ISessionManager
     {
-        private static SessionManager _instance;
+        private static SessionManager? _instance;
 
         public static SessionManager Instance => _instance ??= new SessionManager();
         private int _userId;
@@ -18,7 +18,7 @@ namespace StoreManagement.Services
             }
         }
 
-        private string _username;
+        private string _username = string.Empty;
         public string Username
         {
             get => _username;
@@ -62,10 +62,6 @@ namespace StoreManagement.Services
             }
         }
 
-        private SessionManager()
-        {
-        }
-
         public void Clear()
         {
             UserId = 0;
@@ -76,7 +72,7 @@ namespace StoreManagement.Services
         }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
