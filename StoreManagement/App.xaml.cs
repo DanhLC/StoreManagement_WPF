@@ -38,9 +38,17 @@ namespace StoreManagement
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IConfigRepository, ConfigRepository>();
             services.AddScoped<UserViewModel>();
+            services.AddScoped<MainViewModel>();
+            services.AddScoped<DashboardViewModel>();
+            services.AddScoped<OrderViewModel>();
+
+            services.AddSingleton<IViewFactory, ViewFactory>();
+            services.AddSingleton<ISessionManager>(SessionManager.Instance);
 
             services.AddTransient<LoginView>();
             services.AddTransient<MainFormView>();
+            services.AddTransient<DashboardView>();
+            services.AddTransient<OrderView>();
         }
     }
 }

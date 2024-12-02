@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StoreManagement.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace StoreManagement.Views
 {
@@ -19,9 +9,10 @@ namespace StoreManagement.Views
     /// </summary>
     public partial class MainFormView : Window
     {
-        public MainFormView()
+        public MainFormView(MainViewModel mainViewModel)
         {
             InitializeComponent();
+            DataContext = mainViewModel;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -43,14 +34,16 @@ namespace StoreManagement.Views
         {
             if (WindowState == WindowState.Maximized)
             {
-                // Nếu cửa sổ đang Maximized, chuyển về Normal
                 WindowState = WindowState.Normal;
             }
             else
             {
-                // Nếu cửa sổ đang Normal, chuyển sang Maximized
                 WindowState = WindowState.Maximized;
             }
+        }
+        private void pnControlBar_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        { 
+            DragMove();
         }
     }
 }

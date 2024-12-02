@@ -11,6 +11,7 @@ namespace StoreManagement.ViewModels
 
         private readonly IRepository<Users> _userRepository;
         private readonly IConfigRepository _configRepository;
+        private readonly ISessionManager _sessionManager;
 
         private bool _loginSuccessTriggered;
         private bool _focusPasswordTriggered;
@@ -19,12 +20,16 @@ namespace StoreManagement.ViewModels
         #endregion
 
         #region Constructors
+
         public UserViewModel(
             IRepository<Users> userRepository,
-            IConfigRepository configRepository)
+            IConfigRepository configRepository,
+            ISessionManager sessionManager)
         {
             _userRepository = userRepository;
             _configRepository = configRepository;
+            _sessionManager = sessionManager;
+
             IsPasswordVisible = false;
 
             _ = InitializeAsync();
@@ -135,13 +140,14 @@ namespace StoreManagement.ViewModels
         #endregion
 
         #region Set User Session Value
+
         private void SetUserSessionValue(Users user)
         {
-            SessionManager.Instance.UserId = user.Id;
-            SessionManager.Instance.Username = user.Username;
-            SessionManager.Instance.FullName = user.FullName;
-            SessionManager.Instance.Role = user.Role;
-            SessionManager.Instance.Email = user.Email;
+            _sessionManager.UserId = user.Id;
+            _sessionManager.Username = user.Username;
+            _sessionManager.FullName = user.FullName;
+            _sessionManager.Role = user.Role;
+            _sessionManager.Email = user.Email;
         }
 
         #endregion
