@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using StoreManagement.ViewModels;
+using System.Windows.Controls;
 
 namespace StoreManagement.Views
 {

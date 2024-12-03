@@ -1,6 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using FontAwesome.Sharp;
 using StoreManagement.Services;
-using StoreManagement.Views;
 using System.Windows.Input;
 
 namespace StoreManagement.ViewModels
@@ -25,6 +24,30 @@ namespace StoreManagement.ViewModels
             }
         }
 
+        private string _caption;
+
+        public string Caption
+        {
+            get => _caption;
+            set
+            {
+                _caption = value;
+                OnPropertyChanged(nameof(Caption));
+            }
+        }
+
+        private IconChar _icon;
+
+        public IconChar Icon
+        {
+            get => _icon;
+            set
+            {
+                _icon = value;
+                OnPropertyChanged(nameof(Icon));
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -42,11 +65,19 @@ namespace StoreManagement.ViewModels
             _sessionManager = sessionManager;
             _viewFactory = viewFactory;
 
-            ShowDashboardCommand = new RelayCommand(_ => CurrentChildView = _viewFactory.CreateView("Dashboard"));
-            ShowOrderViewCommand = new RelayCommand(_ => CurrentChildView = _viewFactory.CreateView("Order"));
-            ShowCustomerViewCommand = new RelayCommand(_ => CurrentChildView = _viewFactory.CreateView("Customer"));
+            ShowDashboardCommand = new RelayCommand(_ => SetCurrentView("Dashboard"));
+            ShowOrderViewCommand = new RelayCommand(_ => SetCurrentView("Order"));
+            ShowCustomerViewCommand = new RelayCommand(_ => SetCurrentView("Customer"));
 
-            CurrentChildView = _viewFactory.CreateView("Dashboard");
+            SetCurrentView("Dashboard");
+        }
+
+        private void SetCurrentView(string viewName)
+        {
+            var descriptor = _viewFactory.CreateView(viewName);
+            CurrentChildView = descriptor.ViewFactory.Invoke();
+            Caption = descriptor.Caption;
+            Icon = descriptor.Icon;
         }
     }
 }

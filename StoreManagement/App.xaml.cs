@@ -12,7 +12,7 @@ namespace StoreManagement
     /// </summary>
     public partial class App : Application
     {
-        public static ServiceProvider ServiceProvider { get; private set; }
+        public static ServiceProvider? ServiceProvider { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -26,7 +26,7 @@ namespace StoreManagement
             if (MainWindow is LoginView)
             {
                 MainWindow = loginView;
-                loginView.Show();
+                loginView?.Show();
             }
 
             base.OnStartup(e);
