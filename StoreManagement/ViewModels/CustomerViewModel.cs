@@ -1,6 +1,6 @@
 ﻿namespace StoreManagement.ViewModels
 {
-    public class DashboardViewModel : ViewModelBase
+    internal class CustomerViewModel : ViewModelBase
     {
     }
 }

@@ -31,6 +31,7 @@ namespace StoreManagement.ViewModels
 
         public ICommand ShowDashboardCommand { get; }
         public ICommand ShowOrderViewCommand { get; }
+        public ICommand ShowCustomerViewCommand { get; }
 
         #endregion
 
@@ -43,6 +44,7 @@ namespace StoreManagement.ViewModels
 
             ShowDashboardCommand = new RelayCommand(_ => CurrentChildView = _viewFactory.CreateView("Dashboard"));
             ShowOrderViewCommand = new RelayCommand(_ => CurrentChildView = _viewFactory.CreateView("Order"));
+            ShowCustomerViewCommand = new RelayCommand(_ => CurrentChildView = _viewFactory.CreateView("Customer"));
 
             CurrentChildView = _viewFactory.CreateView("Dashboard");
         }

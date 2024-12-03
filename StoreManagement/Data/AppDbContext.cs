@@ -5,8 +5,13 @@ namespace StoreManagement.Data
 {
     public class AppDbContext : DbContext
     {
+        #region Dbset
+
         public DbSet<Users> Users{ get; set; }
         public DbSet<Config> Config { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+
+        #endregion
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

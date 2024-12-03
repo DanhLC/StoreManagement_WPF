@@ -19,10 +19,15 @@
         <DataTemplate DataType="{x:Type viewModel:DashboardViewModel}">
             <local:DashboardView />
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type viewModel:OrderViewModel}">
             <local:OrderView />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModel:CustomerViewModel}">
+            <local:CustomerView />
+        </DataTemplate>
+        
     </Window.Resources>
     <Border CornerRadius="10"
             BorderThickness="1">

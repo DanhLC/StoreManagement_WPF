@@ -34,21 +34,40 @@ namespace StoreManagement
 
         private void ConfigureServices(ServiceCollection services)
         {
+            #region DB context
+
             services.AddDbContext<AppDbContext>();
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IConfigRepository, ConfigRepository>();
+
+            #endregion
+
+            #region Scoped (View model)
+
             services.AddScoped<UserViewModel>();
             services.AddScoped<MainViewModel>();
             services.AddScoped<DashboardViewModel>();
             services.AddScoped<OrderViewModel>();
+            services.AddScoped<CustomerViewModel>();
+
+            #endregion
+
+            #region Singleton
 
             services.AddSingleton<IViewFactory, ViewFactory>();
             services.AddSingleton<ISessionManager>(SessionManager.Instance);
+
+            #endregion
+
+            #region Transient (View)
 
             services.AddTransient<LoginView>();
             services.AddTransient<MainFormView>();
             services.AddTransient<DashboardView>();
             services.AddTransient<OrderView>();
+            services.AddTransient<CustomerView>();
+
+            #endregion
         }
     }
 }

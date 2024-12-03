@@ -3,11 +3,11 @@
 namespace StoreManagement.Views
 {
     /// <summary>
-    /// Interaction logic for DashboardView.xaml
+    /// Interaction logic for CustomerView.xaml
     /// </summary>
-    public partial class DashboardView : UserControl
+    public partial class CustomerView : UserControl
     {
-        public DashboardView()
+        public CustomerView()
         {
             InitializeComponent();
         }

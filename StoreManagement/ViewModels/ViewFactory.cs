@@ -1,10 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StoreManagement.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreManagement.ViewModels
 {
@@ -19,11 +14,17 @@ namespace StoreManagement.ViewModels
 
         public object CreateView(string viewName)
         {
+            return GetView(viewName) ?? throw new ArgumentException($"View {viewName} is not supported.");
+        }
+
+        private object? GetView(string viewName)
+        {
             return viewName switch
             {
                 "Dashboard" => _serviceProvider.GetService<DashboardView>(),
                 "Order" => _serviceProvider.GetService<OrderView>(),
-                _ => throw new ArgumentException($"View {viewName} is not supported")
+                "Customer" => _serviceProvider.GetService<CustomerView>(),
+                _ => null
             };
         }
     }
