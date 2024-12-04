@@ -32,60 +32,36 @@
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="180" />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                        <TextBlock Text="Customer Name"
+                    <TextBlock Text="Customer Name"
+                               Grid.Column="0"
+                               VerticalAlignment="Center"
+                               Margin="10"/>
+
+                    <TextBox Grid.Column="1"
+                             Style="{StaticResource textBox}"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Center"
+                             Text="{Binding CustomerName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="Phone"
                                    FontWeight="SemiBold"
                                    Foreground="#121518"
                                    HorizontalAlignment="Left"
                                    Margin="10"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
+                                   VerticalAlignment="Center"
+                                   Grid.Column="2" />
 
-                    <StackPanel Grid.Column="1"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                        <Grid MinWidth="400"
-                              Width="Auto"
-                              HorizontalAlignment="Left">
-
-                            <TextBox x:Name="tbCustomerName"
-                                     Text="{Binding CustomerName, UpdateSourceTrigger=PropertyChanged}" 
-                                     Style="{StaticResource filterTextBox}"
-                                     Foreground="Black" />
-                        </Grid>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="2"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                        <TextBlock Text="Phone"
-                                   FontWeight="SemiBold"
-                                   Foreground="#121518"
-                                   HorizontalAlignment="Left"
-                                   Margin="10"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="3"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                        <Grid Width="180"
-                            HorizontalAlignment="Left">
-
-                            <TextBox x:Name="tbPhone"
-                                     Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource filterTextBox}"
-                                     MaxLength="20"
-                                     Foreground="Black" />
-                        </Grid>
-                    </StackPanel>
+                    <TextBox x:Name="tbPhone"
+                             Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource textBox}"
+                             MaxLength="20"
+                             Foreground="Black"
+                             Grid.Column="3" />
                 </Grid>
 
                 <Grid Grid.Row="1">
@@ -209,26 +185,36 @@
                           CellStyle="{DynamicResource DataGridCellStyle1}"
                           x:Name="dgCustomer"
                           Style="{DynamicResource DataGridStyle1}"
-                          ItemsSource="{Binding Customers}"
+                          ItemsSource="{Binding Customers,
+                                    Mode=TwoWay,
+                                    UpdateSourceTrigger=PropertyChanged}"
                           SizeChanged="DataGrid_SizeChanged">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="C"
-                                                CanUserResize="False"
-                                                Width="auto"
-                                                ElementStyle="{StaticResource CheckBoxStyle1}">
-
+                        <DataGridCheckBoxColumn Header="C" CanUserResize="False" Width="Auto">
                             <DataGridCheckBoxColumn.HeaderTemplate>
                                 <DataTemplate>
-                                    <CheckBox Style="{StaticResource CheckBoxStyle1}"/>
+                                    <CheckBox IsChecked="{Binding DataContext.IsAllSelected,
+                                                    RelativeSource={RelativeSource AncestorType=DataGrid},
+                                                    Mode=TwoWay,
+                                                    UpdateSourceTrigger=PropertyChanged}"
+                                              Style="{StaticResource CheckBoxStyle1}" />
                                 </DataTemplate>
                             </DataGridCheckBoxColumn.HeaderTemplate>
-
+                            <DataGridCheckBoxColumn.ElementStyle>
+                                <Style TargetType="CheckBox">
+                                    <Setter Property="IsChecked"
+                                            Value="{Binding IsSelected,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}" />
+                                </Style>
+                            </DataGridCheckBoxColumn.ElementStyle>
                         </DataGridCheckBoxColumn>
 
                         <DataGridTextColumn Header="#"
                                             IsReadOnly="True"
                                             CanUserResize="False"
-                                            Width="auto" Binding="{Binding IdentityNumber}"/>
+                                            Width="auto"
+                                            Binding="{Binding IdentityNumber}"/>
 
                         <DataGridTemplateColumn Header="Name"
                                                 IsReadOnly="True"
@@ -273,11 +259,15 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Style="{StaticResource gridEditButton}">
+                                        <Button x:Name="btnEdit"
+                                                Style="{StaticResource gridEditButton}">
                                             <Icon:PackIconMaterial Kind="PencilOutline"
                                                                    Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
-                                        <Button Margin="5 0 0 0"
+                                        <Button x:Name="btnDelete"
+                                                Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                CommandParameter="{Binding}"
+                                                Margin="5 0 0 0"
                                                 Style="{StaticResource gridRemoveButton}">
                                             <Icon:PackIconMaterial Kind="DeleteOutline"
                                                                    Style="{StaticResource gridButtonIcon}"/>
@@ -317,6 +307,7 @@
                                     Grid.Column="1"
                                     HorizontalAlignment="Right">
                             <Button x:Name="btnHomePage"
+                                    Command="{Binding GoToHomePageCommand}"
                                     Style="{StaticResource pagingButton}"
                                     ToolTip="Home Page">
                                 <Icon:PackIconMaterial Kind="ChevronDoubleLeft" Style="{StaticResource pagingButtonIcon}"/>
@@ -324,16 +315,18 @@
                             <Rectangle Width="1" Fill="#DEE4EC" Margin="3 7"/>
                             
                             <Button x:Name="btnPreviousPage"
+                                    Command="{Binding GoToPreviousPageCommand}"
                                     Style="{StaticResource pagingButton}"
                                     ToolTip="Previous Page"  >
                                 <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
                             </Button>
                             <Rectangle Width="1" Fill="#DEE4EC" Margin="3 7"/>
-                            
+
                             <TextBox x:Name="tbGoto"
-                                     Text="1"
-                                     Style="{StaticResource filterTextBox}"
-                                     Foreground="black"/>
+                                     Text="{Binding CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource textBox}"
+                                     Foreground="black"
+                                     PreviewTextInput="tbGoto_PreviewTextInput" />
 
                             <TextBlock Text="{Binding TotalPages, StringFormat={}/ {0}}"
                                    FontWeight="SemiBold"
@@ -344,7 +337,8 @@
                             <Rectangle Width="1" Fill="#DEE4EC" Margin="3 7"/>
                             
                             <Button x:Name="btnGoto"
-                                Style="{StaticResource pagingButton}">
+                                    Command="{Binding GotoSpecificPageCommand}"
+                                    Style="{StaticResource pagingButton}">
                                 <Icon:PackIconMaterial
                                     Kind="ExitToApp"
                                     Style="{StaticResource pagingButtonIcon}"
@@ -355,6 +349,7 @@
                             
                             <Rectangle Width="1" Fill="#DEE4EC" Margin="3 7"/>
                             <Button x:Name="btnNextPage"
+                                    Command="{Binding GoToNextPageCommand}"
                                     Style="{StaticResource pagingButton}"
                                     ToolTip="Next Page">
                                 <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
@@ -362,6 +357,7 @@
                             
                             <Rectangle Width="1" Fill="#DEE4EC" Margin="3 7"/>
                             <Button x:Name="btnEndPage"
+                                    Command="{Binding GoToEndPageCommand}"
                                     Style="{StaticResource pagingButton}"
                                     ToolTip="End Page">
                                 <Icon:PackIconMaterial Kind="ChevronDoubleRight" Style="{StaticResource pagingButtonIcon}"/>

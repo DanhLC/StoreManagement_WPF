@@ -2,6 +2,7 @@
 using StoreManagement.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace StoreManagement.Views
 {
@@ -49,6 +50,11 @@ namespace StoreManagement.Views
                     viewModel.LoadPageCommand.Execute(null);
                 }
             }
+        }
+
+        private void tbGoto_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !int.TryParse(e.Text, out int result);
         }
     }
 }
