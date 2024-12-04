@@ -39,11 +39,22 @@ namespace StoreManagement.Services
         public async Task DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id);
+
             if (entity != null)
             {
                 _dbSet.Remove(entity);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(int pageIndex, int pageSize)
+        {
+            var totalCount = await _dbSet.CountAsync();
+            var items = await _dbSet.Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
         }
     }
 }

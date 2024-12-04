@@ -9,7 +9,7 @@ namespace StoreManagement.Data
 
         public DbSet<Users> Users{ get; set; }
         public DbSet<Config> Config { get; set; }
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Customers> Customers { get; set; }
 
         #endregion
 

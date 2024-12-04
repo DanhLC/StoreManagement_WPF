@@ -29,11 +29,11 @@ namespace StoreManagement.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
+                    FullName = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
                     Phone = table.Column<string>(type: "TEXT", nullable: false),
-                    Address = table.Column<string>(type: "TEXT", nullable: false)
+                    Address = table.Column<string>(type: "TEXT", nullable: false),
+                    DebtAmount = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

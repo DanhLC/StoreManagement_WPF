@@ -47,6 +47,7 @@ namespace StoreManagement.ViewModels
                 OnPropertyChanged(nameof(Icon));
             }
         }
+        private bool IsDefaultLoading = false;
 
         #endregion
 
@@ -69,7 +70,7 @@ namespace StoreManagement.ViewModels
             ShowOrderViewCommand = new RelayCommand(_ => SetCurrentView("Order"));
             ShowCustomerViewCommand = new RelayCommand(_ => SetCurrentView("Customer"));
 
-            SetCurrentView("Dashboard");
+            if (!IsDefaultLoading) SetCurrentView("Dashboard");
         }
 
         private void SetCurrentView(string viewName)

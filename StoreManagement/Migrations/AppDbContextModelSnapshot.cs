@@ -37,7 +37,7 @@ namespace StoreManagement.Migrations
                     b.ToTable("Config");
                 });
 
-            modelBuilder.Entity("StoreManagement.Models.Customer", b =>
+            modelBuilder.Entity("StoreManagement.Models.Customers", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -47,15 +47,14 @@ namespace StoreManagement.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("DebtAmount")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

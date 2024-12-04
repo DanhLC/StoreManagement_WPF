@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StoreManagement.Data;
+using StoreManagement.Formatting;
 using StoreManagement.Services;
 using StoreManagement.ViewModels;
 using StoreManagement.Views;
+using System.Globalization;
 using System.Windows;
 
 namespace StoreManagement
@@ -56,6 +58,7 @@ namespace StoreManagement
 
             services.AddSingleton<IViewFactory, ViewFactory>();
             services.AddSingleton<ISessionManager>(SessionManager.Instance);
+            services.AddSingleton<IFormatService, FormatService>(provider => new FormatService(new CultureInfo("vi-VN")));
 
             #endregion
 
