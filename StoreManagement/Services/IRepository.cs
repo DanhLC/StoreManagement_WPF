@@ -1,4 +1,6 @@
-﻿namespace StoreManagement.Services
+﻿using System.Linq.Expressions;
+
+namespace StoreManagement.Services
 {
     public interface IRepository<T> where T : class
     {
@@ -7,6 +9,11 @@
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(int id);
-        Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(int pageIndex, int pageSize);
+        Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(
+                int pageIndex,
+                int pageSize,
+                Expression<Func<T, bool>> predicate = null,
+                Expression<Func<T, object>> orderBy = null,
+                bool isDescending = false);
     }
 }

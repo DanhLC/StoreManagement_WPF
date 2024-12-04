@@ -19,34 +19,6 @@ namespace StoreManagement.ViewModels
 
         #endregion
 
-        #region Constructors
-
-        public UserViewModel(
-            IRepository<Users> userRepository,
-            IConfigRepository configRepository,
-            ISessionManager sessionManager)
-        {
-            _userRepository = userRepository;
-            _configRepository = configRepository;
-            _sessionManager = sessionManager;
-
-            IsPasswordVisible = false;
-
-            _ = InitializeAsync();
-        }
-
-        #endregion
-
-        #region Initialization
-
-        private async Task InitializeAsync()
-        {
-            await LoadInformation();
-            await ApplyQuickLoginAsync();
-        }
-
-        #endregion
-
         #region Properties
 
         [ObservableProperty]
@@ -77,6 +49,34 @@ namespace StoreManagement.ViewModels
         #region Commands
 
         public IRelayCommand LoginCommand => new AsyncRelayCommand(LoginAsync);
+
+        #endregion
+
+        #region Constructors
+
+        public UserViewModel(
+            IRepository<Users> userRepository,
+            IConfigRepository configRepository,
+            ISessionManager sessionManager)
+        {
+            _userRepository = userRepository;
+            _configRepository = configRepository;
+            _sessionManager = sessionManager;
+
+            IsPasswordVisible = false;
+
+            _ = InitializeAsync();
+        }
+
+        #endregion
+
+        #region Initialization
+
+        private async Task InitializeAsync()
+        {
+            await LoadInformation();
+            await ApplyQuickLoginAsync();
+        }
 
         #endregion
 

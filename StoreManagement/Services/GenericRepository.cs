@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StoreManagement.Data;
+using System.Linq.Expressions;
 
 namespace StoreManagement.Services
 {
@@ -47,10 +48,27 @@ namespace StoreManagement.Services
             }
         }
 
-        public async Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(int pageIndex, int pageSize)
+        public async Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(
+            int pageIndex,
+            int pageSize,
+            Expression<Func<T, bool>> predicate = null,
+            Expression<Func<T, object>> orderBy = null,
+            bool isDescending = false)
         {
-            var totalCount = await _dbSet.CountAsync();
-            var items = await _dbSet.Skip((pageIndex - 1) * pageSize)
+            IQueryable<T> query = _dbSet;
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            if (orderBy != null)
+            {
+                query = isDescending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
+            }
+
+            var totalCount = await query.CountAsync();
+            var items = await query.Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 

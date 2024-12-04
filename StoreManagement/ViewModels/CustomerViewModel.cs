@@ -4,6 +4,7 @@ using StoreManagement.Formatting;
 using StoreManagement.Models;
 using StoreManagement.Services;
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -11,16 +12,49 @@ namespace StoreManagement.ViewModels
 {
     public class CustomerViewModel : ObservableObject
     {
-        #region Properties
+        #region Fields
 
         private readonly IRepository<Customers> _customerRepository;
         private readonly IFormatService _formatService;
+
+        #endregion
+
+        #region Properties
 
         public ObservableCollection<Customers> Customers { get; set; }
         public int TotalResults { get; private set; }
         public int PageSize { get; private set; } = 10;
         public int CurrentPage { get; private set; } = 1;
         public int TotalPages => (int)Math.Ceiling((double)TotalResults / PageSize);
+        private string _customerName;
+
+        public string CustomerName
+        {
+            get => _customerName;
+            set
+            {
+                if (_customerName != value)
+                {
+                    _customerName = value;
+                    OnPropertyChanged(nameof(CustomerName));
+                }
+            }
+        }
+
+        private string _phone;
+
+        public string Phone
+        {
+            get => _phone;
+            set
+            {
+                if (_phone != value)
+                {
+                    _phone = value;
+                    OnPropertyChanged(nameof(Phone));
+                }
+            }
+        }
 
         #endregion
 
@@ -45,7 +79,16 @@ namespace StoreManagement.ViewModels
 
         public async Task LoadPageAsync(int pageIndex)
         {
-            var (items, totalCount) = await _customerRepository.GetPagedAsync(pageIndex, PageSize);
+            Expression<Func<Customers, bool>> predicate = customer =>
+                   (string.IsNullOrWhiteSpace(CustomerName) || customer.FullName.Contains(CustomerName)) &&
+                   (string.IsNullOrWhiteSpace(Phone) || customer.Phone.Contains(Phone));
+            var (items, totalCount) = await _customerRepository.GetPagedAsync(
+                 pageIndex: pageIndex,
+                 pageSize: PageSize,
+                 predicate: predicate,
+                 orderBy: customer => customer.Id,
+                 isDescending: true
+             );
 
             Customers.Clear();
             var identityNo = 1;
