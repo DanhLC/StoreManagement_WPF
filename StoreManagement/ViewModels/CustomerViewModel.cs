@@ -237,22 +237,22 @@ namespace StoreManagement.ViewModels
 
         private void OnEdit(Customers customer)
         {
-            if (customer == null) return; 
+            //if (customer == null) return; 
 
-            var editCustomerView = new DashboardView
-            {
-                DataContext = new DashboardViewModel(_customerRepository, customer.Id)
-            };
+            //var editCustomerView = new DashboardView
+            //{
+            //    DataContext = new DashboardViewModel(_customerRepository, customer.Id)
+            //};
 
-            var window = new Window
-            {
-                Content = editCustomerView,
-                Title = "Edit Customer",
-                Height = 300,
-                Width = 400
-            };
+            //var window = new Window
+            //{
+            //    Content = editCustomerView,
+            //    Title = "Edit Customer",
+            //    Height = 300,
+            //    Width = 400
+            //};
 
-            window.ShowDialog();
+            //window.ShowDialog();
         }
     }
 }
