@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - master
+
 jobs:
   build:
     runs-on: windows-latest
@@ -28,12 +29,11 @@ jobs:
     - name: Build application
       run: dotnet build --no-restore --configuration Release
       
-    - name: Build solution
-      run: dotnet build --configuration Debug
+    - name: Build Test Project
+      run: dotnet build StoreManagement.Tests/StoreManagement.Tests.csproj --configuration Debug
 
     - name: List output files
-      run: dir /s D:\a\StoreManagement_WPF\StoreManagement_WPF\StoreManagement.Tests\bin
-      
+      run: dir ${{ github.workspace }}\StoreManagement.Tests\bin\Debug\net6.0-windows
+
     - name: Run Unit Tests
-      run: dotnet test --no-build --verbosity normal
-      
+      run: dotnet test StoreManagement.Tests/StoreManagement.Tests.csproj --no-build --verbosity normal
