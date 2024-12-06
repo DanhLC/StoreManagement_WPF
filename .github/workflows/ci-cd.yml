@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Chạy pipeline khi đẩy code lên nhánh main
+      - main  # Chạy pipeline khi push lên nhánh main
   pull_request:
     branches:
-      - main
+      - main  # Chạy pipeline khi có pull request vào nhánh main
 
 jobs:
   build:
@@ -19,15 +19,10 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0
+        dotnet-version: 6.0  # Đổi thành phiên bản .NET của bạn
 
     - name: Restore dependencies
       run: dotnet restore
 
     - name: Build application
       run: dotnet build --no-restore --configuration Release
-
-    - name: Deploy to Azure (hoặc thêm lệnh triển khai khác)
-      if: github.ref == 'refs/heads/main'
-      run: |
-        echo "Thêm lệnh triển khai ở đây"
