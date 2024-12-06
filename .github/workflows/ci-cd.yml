@@ -1,0 +1,33 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Chạy pipeline khi đẩy code lên nhánh main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build application
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Deploy to Azure (hoặc thêm lệnh triển khai khác)
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "Thêm lệnh triển khai ở đây"

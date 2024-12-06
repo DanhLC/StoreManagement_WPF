@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using StoreManagement.Models;
 using StoreManagement.Views;
+using System.Windows;
 
 namespace StoreManagement.Services
 {
@@ -14,6 +15,12 @@ namespace StoreManagement.Services
             _serviceProvider = serviceProvider;
         }
 
+        /// <summary>
+        /// Create child form view (User control)
+        /// </summary>
+        /// <param name="viewName"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public ViewDescriptor CreateView(string viewName)
         {
             return GetView(viewName) ?? throw new ArgumentException($"View {viewName} is not supported.");
@@ -40,6 +47,28 @@ namespace StoreManagement.Services
                 ),
                 _ => null
             };
+        }
+
+        /// <summary>
+        /// Create view
+        /// </summary>
+        /// <param name="viewName"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public Window CreateView(string viewName, object parameter)
+        {
+            var window = viewName switch
+            {
+                "CustomerInput" => new Window
+                {
+                    Content = _serviceProvider.GetService<CustomerInputView>(),
+                    DataContext = parameter
+                },
+                _ => throw new ArgumentException($"View {viewName} is not registered.")
+            };
+
+            return window;
         }
     }
 }

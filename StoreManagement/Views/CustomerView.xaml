@@ -17,9 +17,6 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!--Left Menu-->
-
-            <!--Main Section-->
             <Grid Grid.Column="1" Margin="30 20 20 20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>

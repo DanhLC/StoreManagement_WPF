@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using StoreManagement.Formatting;
 using StoreManagement.Models;
 using StoreManagement.Services;
-using StoreManagement.Views;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Windows;
@@ -236,24 +235,24 @@ namespace StoreManagement.ViewModels
             }
         }
 
-        //private void OnEdit(Customers customer)
-        //{
-        //    if (customer == null) return;
+        private void OnEdit(Customers customer)
+        {
+            //if (customer == null) return;
 
-        //    var editCustomerView = new DashboardView
-        //    {
-        //        DataContext = new DashboardViewModel(_customerRepository, customer.Id)
-        //    };
+            //var editCustomerView = new DashboardView
+            //{
+            //    DataContext = new DashboardViewModel(_customerRepository, customer.Id)
+            //};
 
-        //    var window = new Window
-        //    {
-        //        Content = editCustomerView,
-        //        Title = "Edit Customer",
-        //        Height = 300,
-        //        Width = 400
-        //    };
+            //var window = new Window
+            //{
+            //    Content = editCustomerView,
+            //    Title = "Edit Customer",
+            //    Height = 300,
+            //    Width = 400
+            //};
 
-        //    window.ShowDialog();
-        //}
+            //window.ShowDialog();
+        }
     }
 }

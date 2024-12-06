@@ -51,6 +51,7 @@ namespace StoreManagement
             services.AddScoped<DashboardViewModel>();
             services.AddScoped<OrderViewModel>();
             services.AddScoped<CustomerViewModel>();
+            services.AddScoped<CustomerInputViewModel>();
 
             #endregion
 
@@ -69,6 +70,7 @@ namespace StoreManagement
             services.AddTransient<DashboardView>();
             services.AddTransient<OrderView>();
             services.AddTransient<CustomerView>();
+            services.AddTransient<CustomerInputView>();
 
             #endregion
         }
