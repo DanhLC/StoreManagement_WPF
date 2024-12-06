@@ -28,6 +28,12 @@ jobs:
     - name: Build application
       run: dotnet build --no-restore --configuration Release
       
+    - name: Build solution
+      run: dotnet build --configuration Debug
+
+    - name: List output files
+      run: dir /s D:\a\StoreManagement_WPF\StoreManagement_WPF\StoreManagement.Tests\bin
+      
     - name: Run Unit Tests
       run: dotnet test --no-build --verbosity normal
       
