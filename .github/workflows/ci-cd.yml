@@ -3,11 +3,12 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Chạy pipeline khi push lên nhánh main
+      - main
+      - master      
   pull_request:
     branches:
-      - main  # Chạy pipeline khi có pull request vào nhánh main
-
+      - main
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
