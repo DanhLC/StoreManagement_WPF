@@ -82,7 +82,7 @@ namespace StoreManagement.ViewModels
 
         #region Task
 
-        private async Task LoginAsync()
+        public async Task LoginAsync()
         {
             if (IsPasswordVisible && Password != PlainPassword) Password = PlainPassword;
 
