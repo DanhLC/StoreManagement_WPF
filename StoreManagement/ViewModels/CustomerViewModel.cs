@@ -237,7 +237,7 @@ namespace StoreManagement.ViewModels
 
         private void OnEdit(Customers customer)
         {
-            //if (customer == null) return;
+            //if (customer == null) return; 
 
             //var editCustomerView = new DashboardView
             //{
