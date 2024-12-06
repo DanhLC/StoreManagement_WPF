@@ -16,16 +16,17 @@ namespace StoreManagement.Tests.ViewModelTests
             var mockConfigRepo = new Mock<IConfigRepository>();
             var mockSessionManager = new Mock<ISessionManager>();
 
+            // Dữ liệu giả cho repo
             var users = new List<Users>
             {
-                new Users { Username = "admin", Password = "admin" }
+                new Users { Username = "testuser", Password = "password123" }
             };
             mockUserRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(users);
 
             var viewModel = new UserViewModel(mockUserRepo.Object, mockConfigRepo.Object, mockSessionManager.Object)
             {
-                Username = "admin",
-                Password = "admin"
+                Username = "testuser",
+                Password = "password123"
             };
 
             string triggeredAction = null;
@@ -36,7 +37,7 @@ namespace StoreManagement.Tests.ViewModelTests
 
             // Assert
             Assert.Equal("LoginSuccess", triggeredAction);
-            mockSessionManager.VerifySet(sm => sm.Username = "admin", Times.Once);
+            mockSessionManager.VerifySet(sm => sm.Username = "testuser", Times.Once);
         }
 
         [Fact]
