@@ -239,8 +239,8 @@ namespace StoreManagement.ViewModels
         {
             //if (customer == null) return; 
 
-            //var editCustomerView = new DashboardView
-            //{test.
+            //var editCustomerView = new DashboardViewtest
+            //{
             //    DataContext = new DashboardViewModel(_customerRepository, customer.Id)
             //};
 
