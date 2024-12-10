@@ -15,5 +15,6 @@ namespace StoreManagement.Services
                 Expression<Func<T, bool>> predicate = null,
                 Expression<Func<T, object>> orderBy = null,
                 bool isDescending = false);
+        Task UpdateSpecificPropertiesAsync(Expression<Func<T, bool>> predicate, Action<T> updateAction);
     }
 }

@@ -37,6 +37,20 @@ namespace StoreManagement.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateSpecificPropertiesAsync(
+            Expression<Func<T, bool>> predicate,
+            Action<T> updateAction)
+        {
+            var entity = await _dbSet.FirstOrDefaultAsync(predicate);
+
+            if (entity == null)  throw new InvalidOperationException("Entity not found.");
+
+            updateAction(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+
         public async Task DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id);

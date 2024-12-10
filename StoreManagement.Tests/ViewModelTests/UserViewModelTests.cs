@@ -11,12 +11,10 @@ namespace StoreManagement.Tests.ViewModelTests
         [Fact]
         public async Task LoginAsync_ShouldTriggerLoginSuccess_WhenCredentialsAreCorrect()
         {
-            // Arrange
             var mockUserRepo = new Mock<IRepository<Users>>();
             var mockConfigRepo = new Mock<IConfigRepository>();
             var mockSessionManager = new Mock<ISessionManager>();
 
-            // Dữ liệu giả cho repo
             var users = new List<Users>
             {
                 new Users { Username = "testuser", Password = "password123" }
@@ -32,10 +30,8 @@ namespace StoreManagement.Tests.ViewModelTests
             string triggeredAction = null;
             viewModel.RegisterUIAction(action => triggeredAction = action);
 
-            // Act
             await viewModel.LoginAsync();
 
-            // Assert
             Assert.Equal("LoginSuccess", triggeredAction);
             mockSessionManager.VerifySet(sm => sm.Username = "testuser", Times.Once);
         }
@@ -43,12 +39,10 @@ namespace StoreManagement.Tests.ViewModelTests
         [Fact]
         public async Task LoginAsync_ShouldSetErrorMessage_WhenCredentialsAreIncorrect()
         {
-            // Arrange
             var mockUserRepo = new Mock<IRepository<Users>>();
             var mockConfigRepo = new Mock<IConfigRepository>();
             var mockSessionManager = new Mock<ISessionManager>();
 
-            // Dữ liệu giả cho repo
             var users = new List<Users>
             {
                 new Users { Username = "testuser", Password = "password123" }
@@ -61,10 +55,8 @@ namespace StoreManagement.Tests.ViewModelTests
                 Password = "wrongpassword"
             };
 
-            // Act
             await viewModel.LoginAsync();
 
-            // Assert
             Assert.Equal("* Incorrect username or password. Please try again.", viewModel.ErrorMessage);
         }
     }

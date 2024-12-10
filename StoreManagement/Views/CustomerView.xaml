@@ -99,7 +99,8 @@
                         <Button Style="{StaticResource addButton}"
                                 Width="110"
                                 Margin="5, 0"
-                                x:Name="btnAdd">
+                                x:Name="btnAdd"
+                                Command="{Binding AddCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="Plus"
                                                VerticalAlignment="Center"
@@ -257,6 +258,8 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Button x:Name="btnEdit"
+                                                Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                CommandParameter="{Binding}"
                                                 Style="{StaticResource gridEditButton}">
                                             <Icon:PackIconMaterial Kind="PencilOutline"
                                                                    Style="{StaticResource gridButtonIcon}"/>

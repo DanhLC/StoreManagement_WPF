@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using StoreManagement.Formatting;
 using StoreManagement.Models;
 using StoreManagement.Services;
@@ -17,6 +18,8 @@ namespace StoreManagement.ViewModels
 
         private readonly IRepository<Customers> _customerRepository;
         private readonly IFormatService _formatService;
+        private readonly IViewFactory _viewFactory;
+        private readonly IServiceProvider _serviceProvider;
 
         #endregion
 
@@ -114,6 +117,8 @@ namespace StoreManagement.ViewModels
         public ICommand GoToPageCommand { get; }
         public ICommand LoadPageCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand EditCommand { get; }
+        public ICommand AddCommand { get; }
         public ICommand GoToPreviousPageCommand { get; }
         public ICommand GoToNextPageCommand { get; }
         public ICommand GoToHomePageCommand { get; }
@@ -122,17 +127,26 @@ namespace StoreManagement.ViewModels
 
         #endregion
 
+        #region Ctor
+
         public CustomerViewModel(
             IRepository<Customers> customerRepository,
-            IFormatService formatService)
+            IFormatService formatService,
+            IViewFactory viewFactory,
+            IServiceProvider serviceProvider)
         {
             _customerRepository = customerRepository;
             _formatService = formatService;
+            _viewFactory = viewFactory;
+            _serviceProvider = serviceProvider;
             Customers = new ObservableCollection<Customers>();
 
             LoadPageCommand = new RelayCommand(async _ => await LoadPageAsync(CurrentPage));
             GoToPageCommand = new RelayCommand<int>(async pageIndex => await LoadPageAsync(pageIndex));
             DeleteCommand = new RelayCommand<Customers>(OnDelete);
+            EditCommand = new RelayCommand<Customers>(OnEdit);
+            AddCommand = new RelayCommand(_ => OnAdd());
+
             GoToNextPageCommand = new RelayCommand(
                 async _ => await LoadPageAsync(CurrentPage + 1),
                 _ => CurrentPage < TotalPages);
@@ -148,7 +162,10 @@ namespace StoreManagement.ViewModels
             GotoSpecificPageCommand = new RelayCommand(
                 async _ => await LoadPageAsync(CurrentPage),
                 _ => (CurrentPage != 0 && CurrentPage < (TotalPages + 1)));
+            _serviceProvider = serviceProvider;
         }
+
+        #endregion
 
         public async Task LoadPageAsync(int pageIndex)
         {
@@ -175,10 +192,8 @@ namespace StoreManagement.ViewModels
             {
                 var randomColor = colors[random.Next(colors.Length)];
                 var converter = new BrushConverter();
-                var bgColor = (Brush)converter.ConvertFromString(randomColor);
-
                 customer.IdentityNumber = identityNo;
-                customer.BgColor = bgColor;
+                customer.BgColor = randomColor;
                 customer.Character = string.IsNullOrWhiteSpace(customer.FullName) ? string.Empty
                     : customer.FullName[0].ToString().ToUpper();
                 var debtAmount = customer.DebtAmount;
@@ -237,22 +252,18 @@ namespace StoreManagement.ViewModels
 
         private void OnEdit(Customers customer)
         {
-            //if (customer == null) return; 
+            if (customer == null) return;
 
-            //var editCustomerView = new DashboardView
-            //{
-            //    DataContext = new DashboardViewModel(_customerRepository, customer.Id)
-            //};
+            var customerInputViewModel = _serviceProvider.GetRequiredService<CustomerInputViewModel>();
+            customerInputViewModel.Customer = _formatService.DeepCopyUsingJson(customer);
+            _viewFactory.OpenViewInput("CustomerInput", customerInputViewModel, 450, 450, "Edit Customer");
+        }
 
-            //var window = new Window
-            //{
-            //    Content = editCustomerView,
-            //    Title = "Edit Customer",
-            //    Height = 300,
-            //    Width = 400
-            //};
-
-            //window.ShowDialog();
+        private void OnAdd()
+        {
+            var customerInputViewModel = _serviceProvider.GetRequiredService<CustomerInputViewModel>();
+            customerInputViewModel.Customer = new Customers();
+            _viewFactory.OpenViewInput("CustomerInput", customerInputViewModel, 450, 450, "Edit Customer");
         }
     }
 }

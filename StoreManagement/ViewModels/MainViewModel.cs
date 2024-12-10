@@ -6,12 +6,16 @@ namespace StoreManagement.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        #region Properties
+        #region Fields
 
         private readonly IViewFactory _viewFactory;
         private readonly ISessionManager _sessionManager;
-
         public ISessionManager Session => _sessionManager;
+
+        #endregion
+
+        #region Properties
+
         private object _currentChildView;
 
         public object CurrentChildView

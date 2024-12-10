@@ -24,7 +24,7 @@ namespace StoreManagement.Models
         public string Character { get; set; }
 
         [NotMapped]
-        public Brush BgColor { get; set; }
+        public string BgColor { get; set; }
 
         [NotMapped]
         public string DebtAmountString { get; set; }

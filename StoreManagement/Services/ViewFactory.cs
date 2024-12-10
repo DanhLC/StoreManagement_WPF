@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using StoreManagement.Models;
 using StoreManagement.Views;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace StoreManagement.Services
 {
@@ -49,26 +51,30 @@ namespace StoreManagement.Services
             };
         }
 
-        /// <summary>
-        /// Create view
-        /// </summary>
-        /// <param name="viewName"></param>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
-        public Window CreateView(string viewName, object parameter)
+        public void OpenViewInput(string viewName, object parameter, int height, int width, string title)
         {
-            var window = viewName switch
+            var content = viewName switch
             {
-                "CustomerInput" => new Window
-                {
-                    Content = _serviceProvider.GetService<CustomerInputView>(),
-                    DataContext = parameter
-                },
+                "CustomerInput" => _serviceProvider.GetService<CustomerInputView>(),
                 _ => throw new ArgumentException($"View {viewName} is not registered.")
             };
 
-            return window;
+            var window = new Window
+            {
+                Content = content,
+                DataContext = parameter,
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Height = height,
+                Width = width,
+                Background = Brushes.Transparent,
+                AllowsTransparency = true,
+                Title = title,
+                Icon = new BitmapImage(new Uri("pack://application:,,,/Images/app_icon.ico"))
+            };
+
+            window.ShowDialog();
         }
     }
 }

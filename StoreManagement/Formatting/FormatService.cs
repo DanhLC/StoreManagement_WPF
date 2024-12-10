@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.Json;
 
 namespace StoreManagement.Formatting
 {
@@ -15,15 +16,14 @@ namespace StoreManagement.Formatting
         {
             try
             {
-                var parts = value.ToString("F", CultureInfo.InvariantCulture).Split('.');
+                var integerPart = ((long)value).ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".");
+                var fractionalPart = value % 1 == 0
+                    ? string.Empty
+                    : value.ToString("0.############################", CultureInfo.InvariantCulture)
+                           .Split('.')[1]
+                           .Replace(".", ",");
 
-                var integerPart = parts[0];
-                integerPart = string.Format("{0:N0}", decimal.Parse(integerPart))
-                                     .Replace(",", ".");
-
-                var fractionalPart = parts.Length > 1 ? "," + parts[1] : string.Empty;
-
-                return integerPart + fractionalPart;
+                return fractionalPart == string.Empty ? integerPart : $"{integerPart},{fractionalPart}";
             }
             catch 
             { 
@@ -42,6 +42,18 @@ namespace StoreManagement.Formatting
             {
                 return 0m;
             }
+        }
+
+        public T DeepCopyUsingJson<T>(T source)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source), "Source object cannot be null.");
+            }
+
+            var serializedObject = JsonSerializer.Serialize(source);
+
+            return JsonSerializer.Deserialize<T>(serializedObject);
         }
     }
 }
