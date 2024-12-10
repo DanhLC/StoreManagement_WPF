@@ -8,7 +8,9 @@ namespace StoreManagement.Services
         Task<T> GetByIdAsync(int id);
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
-        Task DeleteAsync(int id);
+        Task DeleteByIdAsync(int id);
+        Task DeleteOneAsync(Func<T, bool> predicate);
+        Task DeleteManyAsync(Func<T, bool> predicate);
         Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(
                 int pageIndex,
                 int pageSize,

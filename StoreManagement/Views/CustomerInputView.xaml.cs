@@ -31,6 +31,19 @@ namespace StoreManagement.Views
             {
                 MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
             };
+
+            _viewModel.ShowMessageConfirm += (title, message) =>
+            {
+                var result = MessageBox.Show(
+                     message,
+                     title,
+                     MessageBoxButton.YesNo,
+                     MessageBoxImage.Question
+                 );
+
+                return result == MessageBoxResult.Yes;
+            };
+
             _viewModel.RequestClose += OnRequestClose;
             _viewModel.GoToHomePageRequested += OnGoToHomePageRequested;
         }

@@ -119,7 +119,8 @@
                         <Button Style="{StaticResource addButton}"
                                 Width="110"
                                 Margin="5, 0"
-                                x:Name="btnDelete">
+                                x:Name="btnDelete"
+                                Command="{Binding MultipleDeleteCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="Delete"
                                                VerticalAlignment="Center"

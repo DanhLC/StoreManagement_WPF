@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StoreManagement.Data;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace StoreManagement.Services
@@ -51,9 +52,31 @@ namespace StoreManagement.Services
         }
 
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var entity = await GetByIdAsync(id);
+
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteManyAsync(Func<T, bool> predicate)
+        {
+            var entities = _dbSet.Where(predicate).ToList();
+
+            if (entities.Any())
+            {
+                _dbSet.RemoveRange(entities);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteOneAsync(Func<T, bool> predicate)
+        {
+            var entity = _dbSet.FirstOrDefault(predicate);
 
             if (entity != null)
             {

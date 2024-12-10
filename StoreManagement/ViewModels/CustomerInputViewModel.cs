@@ -2,6 +2,7 @@
 using StoreManagement.Formatting;
 using StoreManagement.Models;
 using StoreManagement.Services;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace StoreManagement.ViewModels
@@ -20,6 +21,7 @@ namespace StoreManagement.ViewModels
         public event Action RequestClose;
         public event Action GoToHomePageRequested;
         public event Action<string, string> ShowMessage;
+        public event Func<string, string, bool> ShowMessageConfirm;
 
         public Customers Customer { get; set;  }
         private string _errorMessage;
@@ -61,11 +63,23 @@ namespace StoreManagement.ViewModels
                 return;
             }
 
+            var validEmailPattern = @"^[\w\.-]+@[\w\.-]+\.\w+$";
+
+            if (!string.IsNullOrWhiteSpace(Customer.Email) && !Regex.IsMatch(Customer.Email , validEmailPattern))
+            {
+                ErrorMessage = "Invalid email.";
+                return;
+            }
+
             var isInsertAction = (Customer.Id == 0);
             var debtAmount = _formatService.ParseCurrencyFormat(Customer.DebtAmountString);
 
             try
             {
+                var isConfirmed = ShowMessageConfirm.Invoke("Question",  string.Format("Do you want to {0}?", isInsertAction ? "insert" : "update"));
+
+                if (!isConfirmed) return;
+
                 if (isInsertAction)
                 {
                     Customer.DebtAmount = debtAmount;

@@ -25,6 +25,8 @@ namespace StoreManagement.ViewModels
 
         #region Properties
 
+        public event Func<string, string, bool> ShowMessageConfirm;
+        public event Action<string, string> ShowMessage;
         public ObservableCollection<Customers> Customers { get; set; }
         public int TotalResults { get; private set; }
         public int PageSize { get; private set; } = 10;
@@ -119,6 +121,7 @@ namespace StoreManagement.ViewModels
         public ICommand DeleteCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand AddCommand { get; }
+        public ICommand MultipleDeleteCommand { get; }
         public ICommand GoToPreviousPageCommand { get; }
         public ICommand GoToNextPageCommand { get; }
         public ICommand GoToHomePageCommand { get; }
@@ -144,6 +147,7 @@ namespace StoreManagement.ViewModels
             LoadPageCommand = new RelayCommand(async _ => await LoadPageAsync(CurrentPage));
             GoToPageCommand = new RelayCommand<int>(async pageIndex => await LoadPageAsync(pageIndex));
             DeleteCommand = new RelayCommand<Customers>(OnDelete);
+            MultipleDeleteCommand = new RelayCommand(async _ => await OnMultipleDelete());
             EditCommand = new RelayCommand<Customers>(OnEdit);
             AddCommand = new RelayCommand(_ => OnAdd());
 
@@ -235,17 +239,13 @@ namespace StoreManagement.ViewModels
         {
             if (customer == null) return;
 
-            var result = MessageBox.Show(
-                string.Format("Are you sure you want to delete {0}, Address {1}?", customer.FullName, customer.Address),
-                    "Delete Confirmation",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
+            var isConfirmed = ShowMessageConfirm.Invoke("Delete Confirmation", string.Format("Are you sure you want to delete customer: {0}, Address: {1}?", customer.FullName, customer.Address));
 
-            if (result == MessageBoxResult.Yes)
+            if (isConfirmed)
             {
-                await _customerRepository.DeleteAsync(customer.Id);
+                await _customerRepository.DeleteByIdAsync(customer.Id);
                 Customers.Remove(customer);
-                MessageBox.Show(string.Format("Customer {0}, Address {1} has been deleted.", customer.FullName, customer.Address));
+                MessageBox.Show(string.Format("Customer: {0}, Address: {1} has been deleted.", customer.FullName, customer.Address));
                 await LoadPageAsync(CurrentPage);
             }
         }
@@ -257,6 +257,34 @@ namespace StoreManagement.ViewModels
             var customerInputViewModel = _serviceProvider.GetRequiredService<CustomerInputViewModel>();
             customerInputViewModel.Customer = _formatService.DeepCopyUsingJson(customer);
             _viewFactory.OpenViewInput("CustomerInput", customerInputViewModel, 450, 450, "Edit Customer");
+        }
+
+        private async Task OnMultipleDelete()
+        {
+            if (!Customers.Any(e => e.IsSelected)) ShowMessage?.Invoke("Error", "Could you please specify which information you would like to delete?");
+            else
+            {
+                try
+                {
+                    var isConfirmed = ShowMessageConfirm.Invoke(
+                        "Delete Confirmation",
+                        string.Format("Are you sure you want to delete customers: {0}?",
+                            string.Join(", ",
+                                Customers
+                                    .Where(e => e.IsSelected)
+                                    .Select(e => e.FullName))));
+
+                    if (!isConfirmed) return;
+
+                    var validCusomers = Customers.Where(e => e.IsSelected);
+                    await _customerRepository.DeleteManyAsync(item => validCusomers.Select(e => e.Id).ToList().Contains(item.Id));
+                    ShowMessage?.Invoke("Success", "The data has been successfully deleted.");
+                }
+                catch (Exception ex)
+                {
+                    ShowMessage?.Invoke("Error", string.Format("* {0}", ex.Message));
+                }
+            }
         }
 
         private void OnAdd()

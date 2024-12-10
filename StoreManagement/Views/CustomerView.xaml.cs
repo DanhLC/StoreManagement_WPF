@@ -18,6 +18,23 @@ namespace StoreManagement.Views
             var viewModel = App.ServiceProvider.GetService<CustomerViewModel>();
             DataContext = viewModel;
 
+            viewModel.ShowMessageConfirm += (title, message) =>
+            {
+                var result = MessageBox.Show(
+                     message,
+                     title,
+                     MessageBoxButton.YesNo,
+                     MessageBoxImage.Question
+                 );
+
+                return result == MessageBoxResult.Yes;
+            };
+
+            viewModel.ShowMessage += (title, message) =>
+            {
+                MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
+            };
+
             if (viewModel != null)
             {
                 Loaded += async (s, e) => await viewModel.LoadPageAsync(1);
