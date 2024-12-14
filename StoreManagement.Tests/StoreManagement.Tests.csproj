@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StoreManagement\StoreManagement.csproj" />
+    <ProjectReference Include="..\StoreManagement\StoreManagement.UI.csproj" />
   </ItemGroup>
 
 </Project>

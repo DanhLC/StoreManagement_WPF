@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StoreManagement.ViewModels;
+using StoreManagement.Core.Interfaces.Views;
+using StoreManagement.UI.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace StoreManagement.Views
+namespace StoreManagement.UI.Views
 {
     /// <summary>
     /// Interaction logic for CustomerView.xaml
     /// </summary>
-    public partial class CustomerView : UserControl
+    public partial class CustomerView : UserControl, ICustomerView
     {
         public CustomerView()
         {

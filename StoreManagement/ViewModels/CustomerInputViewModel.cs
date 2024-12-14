@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using StoreManagement.Formatting;
-using StoreManagement.Models;
-using StoreManagement.Services;
+using StoreManagement.Core;
+using StoreManagement.Core.Interfaces.Formatting;
+using StoreManagement.Core.Interfaces.Services;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 
-namespace StoreManagement.ViewModels
+namespace StoreManagement.UI.ViewModels
 {
     public class CustomerInputViewModel : ObservableObject
     {

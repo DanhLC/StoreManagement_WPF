@@ -1,8 +1,8 @@
-﻿using StoreManagement.ViewModels;
+﻿using StoreManagement.UI.ViewModels;
 using System.Windows;
 using System.Windows.Input;
 
-namespace StoreManagement.Views
+namespace StoreManagement.UI.Views
 {
     /// <summary>
     /// Interaction logic for MainFormView.xaml
@@ -41,6 +41,7 @@ namespace StoreManagement.Views
                 WindowState = WindowState.Maximized;
             }
         }
+
         private void pnControlBar_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         { 
             DragMove();

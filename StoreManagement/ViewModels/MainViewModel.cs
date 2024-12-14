@@ -1,8 +1,8 @@
 ﻿using FontAwesome.Sharp;
-using StoreManagement.Services;
+using StoreManagement.Core.Interfaces.Services;
 using System.Windows.Input;
 
-namespace StoreManagement.ViewModels
+namespace StoreManagement.UI.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {

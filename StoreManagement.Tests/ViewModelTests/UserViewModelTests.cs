@@ -1,10 +1,10 @@
 ﻿using Moq;
-using StoreManagement.Models;
-using StoreManagement.Services;
-using StoreManagement.ViewModels;
+using StoreManagement.Core;
+using StoreManagement.Core.Interfaces.Services;
+using StoreManagement.UI.ViewModels;
 using Xunit;
 
-namespace StoreManagement.Tests.ViewModelTests
+namespace StoreManagement.UI.Tests.ViewModelTests
 {
     public class UserViewModelTests
     {

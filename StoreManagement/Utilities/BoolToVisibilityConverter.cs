@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace StoreManagement.Utilities
+namespace StoreManagement.UI.Utilities
 {
     public class BoolToVisibilityConverter : IValueConverter
     {

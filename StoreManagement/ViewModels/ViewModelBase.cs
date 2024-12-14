@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace StoreManagement.ViewModels
+namespace StoreManagement.UI.ViewModels
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {

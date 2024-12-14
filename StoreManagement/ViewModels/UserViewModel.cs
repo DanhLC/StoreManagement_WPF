@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using StoreManagement.Models;
-using StoreManagement.Services;
+using StoreManagement.Core;
+using StoreManagement.Core.Interfaces.Services;
 
-namespace StoreManagement.ViewModels
+namespace StoreManagement.UI.ViewModels
 {
     public partial class UserViewModel : ObservableObject
     {

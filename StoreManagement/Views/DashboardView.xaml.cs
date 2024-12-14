@@ -1,11 +1,12 @@
-﻿using System.Windows.Controls;
+﻿using StoreManagement.Core.Interfaces.Views;
+using System.Windows.Controls;
 
-namespace StoreManagement.Views
+namespace StoreManagement.UI.Views
 {
     /// <summary>
     /// Interaction logic for DashboardView.xaml
     /// </summary>
-    public partial class DashboardView : UserControl
+    public partial class DashboardView : UserControl, IDashboardView
     {
         public DashboardView()
         {

@@ -1,16 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
-using StoreManagement.Formatting;
-using StoreManagement.Models;
-using StoreManagement.Services;
+using StoreManagement.Core;
+using StoreManagement.Core.Interfaces.Formatting;
+using StoreManagement.Core.Interfaces.Services;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace StoreManagement.ViewModels
+namespace StoreManagement.UI.ViewModels
 {
     public class CustomerViewModel : ObservableObject
     {

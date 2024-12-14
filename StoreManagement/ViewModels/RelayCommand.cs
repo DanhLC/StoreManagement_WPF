@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace StoreManagement.ViewModels
+namespace StoreManagement.UI.ViewModels
 {
     public class RelayCommand : ICommand
     {

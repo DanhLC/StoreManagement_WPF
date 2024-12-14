@@ -1,15 +1,16 @@
-﻿using StoreManagement.Formatting;
-using StoreManagement.ViewModels;
+﻿using StoreManagement.Core.Interfaces.Formatting;
+using StoreManagement.Core.Interfaces.Views;
+using StoreManagement.UI.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace StoreManagement.Views
+namespace StoreManagement.UI.Views
 {
     /// <summary>
     /// Interaction logic for CustomerInputView.xaml
     /// </summary>
-    public partial class CustomerInputView : UserControl
+    public partial class CustomerInputView : UserControl, ICustomerInputView
     {
         private readonly IFormatService _formatService;
         private readonly CustomerInputViewModel _viewModel;
