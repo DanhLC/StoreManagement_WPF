@@ -31,23 +31,25 @@ namespace StoreManagement.UI.ViewModels
         public int TotalResults { get; private set; }
         public int PageSize { get; private set; } = 10;
         public int TotalPages => (int)Math.Ceiling((double)TotalResults / PageSize);
+        private string _customerAddress;
         private string _customerName;
-
         private int _currentPage;
+        private string _phone;
+        private bool _isAllSelected;
+        private bool _isSelected;
 
-        public int CurrentPage
+        public string CustomerAddress
         {
-            get => _currentPage;
+            get => _customerAddress;
             set
             {
-                if (_currentPage != value && (value > 0 && value < (TotalPages + 1)))
+                if (_customerName != value)
                 {
-                    _currentPage = value;
-                    OnPropertyChanged(nameof(CurrentPage));
+                    _customerAddress = value;
+                    OnPropertyChanged(nameof(CustomerAddress));
                 }
             }
         }
-
         public string CustomerName
         {
             get => _customerName;
@@ -60,9 +62,18 @@ namespace StoreManagement.UI.ViewModels
                 }
             }
         }
-
-        private string _phone;
-
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                if (_currentPage != value && (value > 0 && value < (TotalPages + 1)))
+                {
+                    _currentPage = value;
+                    OnPropertyChanged(nameof(CurrentPage));
+                }
+            }
+        }
         public string Phone
         {
             get => _phone;
@@ -75,8 +86,6 @@ namespace StoreManagement.UI.ViewModels
                 }
             }
         }
-
-        private bool _isAllSelected;
 
         public bool IsAllSelected
         {
@@ -97,8 +106,6 @@ namespace StoreManagement.UI.ViewModels
                 }
             }
         }
-
-        private bool _isSelected;
         public bool IsSelected
         {
             get => _isSelected;
@@ -174,8 +181,9 @@ namespace StoreManagement.UI.ViewModels
         public async Task LoadPageAsync(int pageIndex)
         {
             Expression<Func<Customers, bool>> predicate = customer =>
-                   (string.IsNullOrWhiteSpace(CustomerName) || customer.FullName.Contains(CustomerName)) &&
-                   (string.IsNullOrWhiteSpace(Phone) || customer.Phone.Contains(Phone));
+                   (string.IsNullOrWhiteSpace(CustomerName) || customer.FullName.Contains(CustomerName))
+                   && (string.IsNullOrWhiteSpace(Phone) || customer.Phone.Contains(Phone))
+                   && (string.IsNullOrWhiteSpace(CustomerAddress) || customer.Address.Contains(CustomerAddress));
             var (items, totalCount) = await _customerRepository.GetPagedAsync(
                  pageIndex: pageIndex,
                  pageSize: PageSize,

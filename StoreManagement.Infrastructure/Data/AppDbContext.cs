@@ -29,7 +29,14 @@ namespace StoreManagement.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Users>().HasIndex(u => u.Username).IsUnique();
+            modelBuilder.Entity<Users>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
+            modelBuilder.Entity<Config>()
+                .HasIndex(u => u.Key)
+                .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

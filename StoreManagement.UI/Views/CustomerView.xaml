@@ -31,6 +31,8 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="180" />
                     </Grid.ColumnDefinitions>
 
@@ -46,20 +48,32 @@
                              Foreground="Black"
                              Text="{Binding CustomerName, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <TextBlock Text="Phone"
-                                   FontWeight="SemiBold"
-                                   Foreground="#121518"
-                                   HorizontalAlignment="Left"
-                                   Margin="10"
-                                   VerticalAlignment="Center"
-                                   Grid.Column="2" />
+                    <TextBlock Grid.Column="2"
+                               Text="Customer Address"
+                               VerticalAlignment="Center"
+                               Margin="10"/>
+                    
+                    <TextBox Grid.Column="3"
+                             Style="{StaticResource textBox}"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Center"
+                             Foreground="Black"
+                             Text="{Binding CustomerAddress, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <TextBox x:Name="tbPhone"
+                    <TextBlock Grid.Column="4"
+                               Text="Phone"
+                               FontWeight="SemiBold"
+                               Foreground="#121518"
+                               HorizontalAlignment="Left"
+                               Margin="10"
+                               VerticalAlignment="Center" />
+
+                    <TextBox Grid.Column="5"
+                             x:Name="tbPhone"
                              Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource textBox}"
                              MaxLength="20"
-                             Foreground="Black"
-                             Grid.Column="3" />
+                             Foreground="Black" />
                 </Grid>
 
                 <Grid Grid.Row="1">

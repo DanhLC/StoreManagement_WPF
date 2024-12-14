@@ -10,7 +10,7 @@ using StoreManagement.Infrastructure.Data;
 namespace StoreManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241214094618_InitialCreate")]
+    [Migration("20241214171116_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace StoreManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Key")
+                        .IsUnique();
+
                     b.ToTable("Config");
                 });
 
@@ -46,14 +49,12 @@ namespace StoreManagement.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("DebtAmount")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("REAL");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FullName")
@@ -61,7 +62,6 @@ namespace StoreManagement.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

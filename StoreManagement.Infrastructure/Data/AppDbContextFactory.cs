@@ -9,7 +9,7 @@ namespace StoreManagement.Infrastructure.Data
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "StoreManagement.db");
+            var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "StoreManagement.db");
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
 
             return new AppDbContext(optionsBuilder.Options);
