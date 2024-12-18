@@ -24,5 +24,23 @@ namespace StoreManagement.Core
 
         [Column(TypeName = "TEXT")]
         public string? Email { get; set; }
+
+        //[Required]
+        //[Column(TypeName = "TEXT")]
+        //public string Salt { get; set; } = string.Empty;
+
+        //[Column(TypeName = "DATETIME")]
+        //public DateTime? LastLogin { get; set; }
+
+        //[Required]
+        //public bool IsActive { get; set; } = false;
+
+        //[Required]
+        //[Column(TypeName = "TEXT")]
+        //public string SecurityQuestion { get; set; }
+
+        //[Required]
+        //[Column(TypeName = "TEXT")]
+        //public string SecurityAnswer { get; set; }
     }
 }

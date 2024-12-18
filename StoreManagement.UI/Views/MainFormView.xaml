@@ -28,6 +28,7 @@
             <local:CustomerView />
         </DataTemplate>
     </Window.Resources>
+    
     <Border CornerRadius="10"
             BorderThickness="1">
         <Border.BorderBrush>
@@ -143,7 +144,7 @@
 
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color9}"
-                                 Command="{Binding ShowCustomerViewCommand}">
+                                 Command="{Binding ShowUserViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="UserCheck" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Users" Style="{StaticResource menuButtonText}"/>

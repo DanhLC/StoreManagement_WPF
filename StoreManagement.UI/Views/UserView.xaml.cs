@@ -10,30 +10,31 @@ namespace StoreManagement.UI.Views
     /// <summary>
     /// Interaction logic for CustomerView.xaml
     /// </summary>
-    public partial class CustomerView : UserControl, ICustomerView
+    public partial class UserView : UserControl, IUserView
     {
-        public CustomerView()
+        public UserView()
         {
             InitializeComponent();
 
-            var viewModel = App.ServiceProvider.GetService<CustomerViewModel>();
+            var viewModel = App.ServiceProvider.GetService<UserViewModel>();
             DataContext = viewModel;
 
-            viewModel.ShowMessage -= ShowMessageHandler;
-            viewModel.ShowMessage += ShowMessageHandler;
-            viewModel.ShowMessageConfirm -= ShowMessageConfirmHandler;
-            viewModel.ShowMessageConfirm += ShowMessageConfirmHandler;
+            viewModel.ShowMessageConfirm += (title, message) =>
+            {
+                var result = MessageBox.Show(
+                     message,
+                     title,
+                     MessageBoxButton.YesNo,
+                     MessageBoxImage.Question
+                 );
 
-            void ShowMessageHandler(string title, string message)
+                return result == MessageBoxResult.Yes;
+            };
+
+            viewModel.ShowMessage += (title, message) =>
             {
                 MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-
-            bool ShowMessageConfirmHandler(string title, string message)
-            {
-                var result = MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                return result == MessageBoxResult.Yes;
-            }
+            };
 
             if (viewModel != null)
             {

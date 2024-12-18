@@ -5,9 +5,15 @@ namespace StoreManagement.Services
 {
     public class SessionManager : ISessionManager
     {
-        private static SessionManager? _instance;
+        #region Fields
 
+        private static SessionManager? _instance;
         public static SessionManager Instance => _instance ??= new SessionManager();
+
+        #endregion
+
+        #region Properties
+
         private int _userId;
         public int UserId
         {
@@ -62,6 +68,10 @@ namespace StoreManagement.Services
                 OnPropertyChanged(nameof(Email));
             }
         }
+
+        #endregion
+
+        private SessionManager() { }
 
         public void Clear()
         {

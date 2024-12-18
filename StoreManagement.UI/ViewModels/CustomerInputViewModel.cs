@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using StoreManagement.Core;
-using StoreManagement.Core.Interfaces.Formatting;
+using StoreManagement.Core.Interfaces.Builders;
 using StoreManagement.Core.Interfaces.Services;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
@@ -12,7 +12,7 @@ namespace StoreManagement.UI.ViewModels
         #region Fields
 
         private readonly IRepository<Customers> _customerRepository;
-        private readonly IFormatService _formatService;
+        private readonly ICustomerBuilder _customerBuilder;
 
         #endregion
 
@@ -22,7 +22,6 @@ namespace StoreManagement.UI.ViewModels
         public event Action GoToHomePageRequested;
         public event Action<string, string> ShowMessage;
         public event Func<string, string, bool> ShowMessageConfirm;
-
         public Customers Customer { get; set;  }
         private string _errorMessage;
 
@@ -47,10 +46,10 @@ namespace StoreManagement.UI.ViewModels
 
         public CustomerInputViewModel(
             IRepository<Customers> customerRepository,
-            IFormatService formatService)
+            ICustomerBuilder customerBuilder)
         {
             _customerRepository = customerRepository;
-            _formatService = formatService;
+            _customerBuilder = customerBuilder;
 
             SaveCommand = new RelayCommand(async _ => await SaveAsync());
         }
@@ -72,31 +71,36 @@ namespace StoreManagement.UI.ViewModels
             }
 
             var isInsertAction = (Customer.Id == 0);
-            var debtAmount = _formatService.ParseCurrencyFormat(Customer.DebtAmountString);
 
             try
             {
-                var isConfirmed = ShowMessageConfirm.Invoke("Question",  string.Format("Do you want to {0}?", isInsertAction ? "insert" : "update"));
+                var isConfirmed = ShowMessageConfirm.Invoke("Question", string.Format("Do you want to {0}?", isInsertAction ? "insert" : "update"));
 
                 if (!isConfirmed) return;
 
                 if (isInsertAction)
                 {
-                    Customer.DebtAmount = debtAmount;
-                    await _customerRepository.AddAsync(Customer);
+                    var customer = _customerBuilder 
+                        .SetCurrentCustomer(Customer)
+                        .SetDebtAmount(Customer.DebtAmountString ?? "0")
+                        .Build();
+                    await _customerRepository.AddAsync(customer);
                 }
                 else
                 {
                     await _customerRepository.UpdateSpecificPropertiesAsync(
                         e => e.Id == Customer.Id,
-                        entity =>
-                        {
-                            entity.FullName = Customer.FullName;
-                            entity.Phone = Customer.Phone;
-                            entity.Address = Customer.Address;
-                            entity.Email = Customer.Email;
-                            entity.DebtAmount = debtAmount;
-                        });
+                        entity => _customerBuilder
+                            .SetCurrentCustomer(Customer)
+                            .SetDebtAmount(Customer.DebtAmountString ?? "0")
+                            .BuildForUpdate(updatedEntity =>
+                            {
+                                entity.FullName = updatedEntity.FullName;
+                                entity.Phone = updatedEntity.Phone;
+                                entity.Address = updatedEntity.Address;
+                                entity.Email = updatedEntity.Email;
+                                entity.DebtAmount = updatedEntity.DebtAmount;
+                            }));
                 }
 
                 ShowMessage?.Invoke("Success", "You have successfully inserted or updated the data.");

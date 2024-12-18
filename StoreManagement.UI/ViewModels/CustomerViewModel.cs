@@ -1,10 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StoreManagement.Core;
+using StoreManagement.Core.Interfaces.Builders;
 using StoreManagement.Core.Interfaces.Formatting;
 using StoreManagement.Core.Interfaces.Services;
+using StoreManagement.Services.Builders;
+using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Input;
@@ -20,6 +25,7 @@ namespace StoreManagement.UI.ViewModels
         private readonly IFormatService _formatService;
         private readonly IViewFactory _viewFactory;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ICustomerBuilder _customerBuilder;
 
         #endregion
 
@@ -143,12 +149,14 @@ namespace StoreManagement.UI.ViewModels
             IRepository<Customers> customerRepository,
             IFormatService formatService,
             IViewFactory viewFactory,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            ICustomerBuilder customerBuilder)
         {
             _customerRepository = customerRepository;
             _formatService = formatService;
             _viewFactory = viewFactory;
             _serviceProvider = serviceProvider;
+            _customerBuilder = customerBuilder;
             Customers = new ObservableCollection<Customers>();
 
             LoadPageCommand = new RelayCommand(async _ => await LoadPageAsync(CurrentPage));
@@ -181,10 +189,17 @@ namespace StoreManagement.UI.ViewModels
         public async Task LoadPageAsync(int pageIndex)
         {
             Expression<Func<Customers, bool>> predicate = customer =>
-                   (string.IsNullOrWhiteSpace(CustomerName) || customer.FullName.Contains(CustomerName))
-                   && (string.IsNullOrWhiteSpace(Phone) || customer.Phone.Contains(Phone))
-                   && (string.IsNullOrWhiteSpace(CustomerAddress) || customer.Address.Contains(CustomerAddress));
-            var (items, totalCount) = await _customerRepository.GetPagedAsync(
+                (string.IsNullOrWhiteSpace(CustomerName)
+                    || (EF.Functions.Like(customer.FullName, "%" + CustomerName.ToUpper() + "%")
+                        || EF.Functions.Like(customer.FullName, "%" + CustomerName.ToLower() + "%")
+                        || EF.Functions.Like(customer.FullName, "%" + CustomerName + "%")))
+                && (string.IsNullOrWhiteSpace(Phone) || EF.Functions.Like(customer.Phone, "%" + Phone + "%"))
+                && (string.IsNullOrWhiteSpace(CustomerAddress)
+                    || (EF.Functions.Like(customer.Address, "%" + CustomerAddress.ToUpper() + "%")
+                        || EF.Functions.Like(customer.Address, "%" + CustomerAddress.ToLower() + "%")
+                        || EF.Functions.Like(customer.Address, "%" + CustomerAddress + "%")));
+
+            var (customers, totalCount) = await _customerRepository.GetPagedAsync(
                  pageIndex: pageIndex,
                  pageSize: PageSize,
                  predicate: predicate,
@@ -200,17 +215,18 @@ namespace StoreManagement.UI.ViewModels
             };
             var random = new Random();
 
-            foreach (var customer in items)
+            foreach (var customer in customers)
             {
-                var randomColor = colors[random.Next(colors.Length)];
-                var converter = new BrushConverter();
-                customer.IdentityNumber = identityNo;
-                customer.BgColor = randomColor;
-                customer.Character = string.IsNullOrWhiteSpace(customer.FullName) ? string.Empty
-                    : customer.FullName[0].ToString().ToUpper();
-                var debtAmount = customer.DebtAmount;
-                customer.DebtAmountString = _formatService.FormatToCurrency(debtAmount);
-                Customers.Add(customer);
+                var processedCustomer = 
+                    _customerBuilder
+                    .SetCurrentCustomer(customer)
+                    .SetIdentityNumber(identityNo)
+                    .SetBgColor(colors, random)
+                    .SetCharacter()
+                    .SetDebtAmountString(customer.DebtAmount)
+                    .Build();
+
+                Customers.Add(processedCustomer);
                 identityNo++;
             }
 
@@ -263,8 +279,11 @@ namespace StoreManagement.UI.ViewModels
             if (customer == null) return;
 
             var customerInputViewModel = _serviceProvider.GetRequiredService<CustomerInputViewModel>();
-            customerInputViewModel.Customer = _formatService.DeepCopyUsingJson(customer);
-            _viewFactory.OpenViewInput("CustomerInput", customerInputViewModel, 450, 450, "Edit Customer");
+            customerInputViewModel.Customer = _customerBuilder
+                    .SetCurrentCustomer(customer)
+                    .SetDebtAmountString(customer.DebtAmount)
+                    .Build();
+            _viewFactory.OpenViewInput("CustomerInput", customerInputViewModel, 480, 450, "Edit Customer");
         }
 
         private async Task OnMultipleDelete()
@@ -299,7 +318,7 @@ namespace StoreManagement.UI.ViewModels
         {
             var customerInputViewModel = _serviceProvider.GetRequiredService<CustomerInputViewModel>();
             customerInputViewModel.Customer = new Customers();
-            _viewFactory.OpenViewInput("CustomerInput", customerInputViewModel, 450, 450, "Edit Customer");
+            _viewFactory.OpenViewInput("CustomerInput", customerInputViewModel, 480, 450, "Add Customer");
         }
     }
 }

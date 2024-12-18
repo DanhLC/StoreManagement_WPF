@@ -14,7 +14,7 @@ namespace StoreManagement.Core
         public string FullName { get; set; }
 
         [Column(TypeName = "TEXT")]
-        public string? Email { get; set; }
+        public string? Email { get; set; } = string.Empty;
 
         [Column(TypeName = "TEXT")]
         public string? Phone { get; set; }

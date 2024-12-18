@@ -1,10 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using StoreManagement.Core.Interfaces.Builders;
+using StoreManagement.Core.Interfaces.Cryptography;
 using StoreManagement.Core.Interfaces.Formatting;
 using StoreManagement.Core.Interfaces.Services;
 using StoreManagement.Core.Interfaces.Views;
 using StoreManagement.Infrastructure.Data;
 using StoreManagement.Services;
+using StoreManagement.Services.Builders;
+using StoreManagement.Services.Cryptography;
 using StoreManagement.Services.Formatting;
 using StoreManagement.UI.ViewModels;
 using StoreManagement.UI.Views;
@@ -43,31 +47,33 @@ namespace StoreManagement.UI
             #region DB context
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=Data/StoreManagement.db"));
-            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<IConfigRepository, ConfigRepository>();
 
             #endregion
 
-            #region Scoped (View model)
+            #region Scoped
 
-            services.AddScoped<UserViewModel>();
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IConfigRepository, ConfigRepository>();
+            services.AddScoped<LoginViewModel>();
             services.AddScoped<MainViewModel>();
             services.AddScoped<DashboardViewModel>();
             services.AddScoped<OrderViewModel>();
             services.AddScoped<CustomerViewModel>();
             services.AddScoped<CustomerInputViewModel>();
+            services.AddScoped<UserViewModel>();
 
             #endregion
 
             #region Singleton
 
             services.AddSingleton<IViewFactory, ViewFactory>();
+            services.AddSingleton<IPasswordHelper, PasswordHelper>();
             services.AddSingleton<ISessionManager>(SessionManager.Instance);
             services.AddSingleton<IFormatService, FormatService>(provider => new FormatService(new CultureInfo("vi-VN")));
 
             #endregion
 
-            #region Transient (View)
+            #region Transient
 
             services.AddTransient<LoginView>();
             services.AddTransient<MainFormView>();
@@ -75,6 +81,8 @@ namespace StoreManagement.UI
             services.AddTransient<IOrderView, OrderView>();
             services.AddTransient<ICustomerView, CustomerView>();
             services.AddTransient<ICustomerInputView, CustomerInputView>();
+            services.AddTransient<IUserView, UserView>();
+            services.AddTransient<ICustomerBuilder, CustomerBuilder>();
 
             #endregion
         }

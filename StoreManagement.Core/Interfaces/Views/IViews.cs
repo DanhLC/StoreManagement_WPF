@@ -4,4 +4,5 @@
     public interface IOrderView { }
     public interface ICustomerView { }
     public interface ICustomerInputView { }
+    public interface IUserView { }
 }

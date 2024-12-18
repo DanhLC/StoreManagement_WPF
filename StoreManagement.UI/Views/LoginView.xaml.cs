@@ -15,9 +15,9 @@ namespace StoreManagement.UI.Views
         {
             InitializeComponent();
 
-            var userViewModel = App.ServiceProvider.GetService<UserViewModel>();
-            DataContext = userViewModel;
-            userViewModel.RegisterUIAction(action =>
+            var loginViewModel = App.ServiceProvider.GetService<LoginViewModel>();
+            DataContext = loginViewModel;
+            loginViewModel.RegisterUIAction(action =>
             {
                 switch (action)
                 {
@@ -36,7 +36,7 @@ namespace StoreManagement.UI.Views
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is UserViewModel viewModel && sender is PasswordBox passwordBox)
+            if (DataContext is LoginViewModel viewModel && sender is PasswordBox passwordBox)
             {
                 viewModel.Password = passwordBox.Password;
                 viewModel.PlainPassword = passwordBox.Password;
@@ -45,7 +45,7 @@ namespace StoreManagement.UI.Views
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (DataContext is UserViewModel viewModel)
+            if (DataContext is LoginViewModel viewModel)
             {
                 pbPassword.Password = viewModel.PlainPassword;
             }
@@ -53,7 +53,7 @@ namespace StoreManagement.UI.Views
 
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (DataContext is UserViewModel viewModel)
+            if (DataContext is LoginViewModel viewModel)
             {
                 pbPassword.Password = viewModel.PlainPassword;
             }

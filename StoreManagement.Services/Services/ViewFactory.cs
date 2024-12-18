@@ -47,6 +47,11 @@ namespace StoreManagement.Services
                     icon: IconChar.UserGroup,
                     viewFactory: () => (ICustomerView)_serviceProvider.GetService(typeof(ICustomerView))!
                 ),
+                "User" => new ViewDescriptor(
+                    caption: "Users",
+                    icon: IconChar.UserCheck,
+                    viewFactory: () => (IUserView)_serviceProvider.GetService(typeof(IUserView))!
+                ),
                 _ => null
             };
         }

@@ -8,43 +8,43 @@
              d:DesignHeight="500" d:DesignWidth="450"
              MouseDown="UserControl_MouseDown"
              Unloaded="UserControl_Unloaded">
-    <Border CornerRadius="12">
-        <Border CornerRadius="10"
+        <Border CornerRadius="12">
+            <Border CornerRadius="10"
                 BorderThickness="2"
                 Opacity="0.95">
-            <Border.BorderBrush>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="#462AD8" Offset="0" />
-                    <GradientStop Color="#DA34AE" Offset="0.75" />
-                    <GradientStop Color="#8A16C1" Offset="1" />
-                </LinearGradientBrush>
-            </Border.BorderBrush>
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                    <GradientStop Color="#060531" Offset="0" />
-                    <GradientStop Color="Aquamarine" Offset="1" />
-                </LinearGradientBrush>
-            </Border.Background>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#462AD8" Offset="0" />
+                        <GradientStop Color="#DA34AE" Offset="0.75" />
+                        <GradientStop Color="#8A16C1" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                        <GradientStop Color="#060531" Offset="0" />
+                        <GradientStop Color="Aquamarine" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="25" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Customer Input"
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="25" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Customer Input"
                                Foreground="White"
                                FontSize="16"
                                FontFamily="Arial"
                                VerticalAlignment="Center"
                                Margin="10,0,0,0"
                                FontWeight="Bold" />
-                    <Button x:Name="btnClose"
+                        <Button x:Name="btnClose"
                             BorderThickness="0"
                             Content="x"
                             Foreground="White"
@@ -53,40 +53,40 @@
                             Cursor="Hand"
                             Grid.Column="2"
                             Click="btnClose_Click">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Background" Value="#DA34AE" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#C62DAE" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Width="18" Height="18"
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#DA34AE" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#C62DAE" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="18" Height="18"
                                         CornerRadius="9"
                                         Background="{TemplateBinding Background}">
-                                    <ContentPresenter VerticalAlignment="Center"
+                                        <ContentPresenter VerticalAlignment="Center"
                                                       HorizontalAlignment="Center" />
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Grid>
 
-                <StackPanel Width="400"
+                    <StackPanel Width="400"
                             Grid.Row="1"
                             Orientation="Vertical"
                             Margin="0, 0, 0, 0">
-                    <TextBlock Text="Full Name"
+                        <TextBlock Text="Full Name"
                                Foreground="White"
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Arial"
                                Margin="0,5,0,0" />
-                    <TextBox x:Name="tbFullName"
+                        <TextBox x:Name="tbFullName"
                              FontSize="13"
                              FontWeight="Medium"
                              FontFamily="Arial"
@@ -100,15 +100,15 @@
                              Padding="20,0,0,0"
                              Background="Transparent"
                              Text="{Binding Customer.FullName, UpdateSourceTrigger=PropertyChanged}">
-                    </TextBox>
+                        </TextBox>
 
-                    <TextBlock Text="Phone"
+                        <TextBlock Text="Phone"
                                Foreground="White"
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Arial"
                                Margin="0,20,0,0" />
-                    <TextBox x:Name="tbPhone"
+                        <TextBox x:Name="tbPhone"
                              FontSize="13"
                              FontWeight="Medium"
                              FontFamily="Arial"
@@ -123,13 +123,13 @@
                              Background="Transparent"                             
                              Text="{Binding Customer.Phone, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Text="Address"
+                        <TextBlock Text="Address"
                                Foreground="White"
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Arial"
                                Margin="0,20,0,0" />
-                    <TextBox x:Name="tbAddress"
+                        <TextBox x:Name="tbAddress"
                              FontSize="13"
                              FontWeight="Medium"
                              FontFamily="Arial"
@@ -144,13 +144,13 @@
                              Background="Transparent"
                              Text="{Binding Customer.Address, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Text="Email"
+                        <TextBlock Text="Email"
                                Foreground="White"
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Arial"
                                Margin="0,20,0,0" />
-                    <TextBox x:Name="tbEmail"
+                        <TextBox x:Name="tbEmail"
                              FontSize="13"
                              FontWeight="Medium"
                              FontFamily="Arial"
@@ -164,14 +164,14 @@
                              Padding="20,0,0,0"
                              Background="Transparent"
                              Text="{Binding Customer.Email, UpdateSourceTrigger=PropertyChanged}" />
-                    
-                    <TextBlock Text="Debt Amount"
+
+                        <TextBlock Text="Debt Amount"
                                Foreground="White"
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Arial"
                                Margin="0,20,0,0" />
-                    <TextBox x:Name="tbDebtAmount"
+                        <TextBox x:Name="tbDebtAmount"
                              FontSize="13"
                              FontWeight="Medium"
                              FontFamily="Arial"
@@ -186,27 +186,27 @@
                              Background="Transparent"
                              Text="{Binding Customer.DebtAmountString, UpdateSourceTrigger=PropertyChanged}"
                              TextChanged="tbDebtAmount_TextChanged" />
-                    
-                    <TextBlock Text="{Binding ErrorMessage}"
+
+                        <TextBlock Text="{Binding ErrorMessage}"
                             Foreground="Red"
                             FontWeight="Bold" 
                             Margin="0,10"
                             TextWrapping="Wrap"
                             Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
-                    
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition  />
-                            </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                            <Button x:Name="btnSave"
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition  />
+                                </Grid.ColumnDefinitions>
+
+                                <Button x:Name="btnSave"
                                     BorderThickness="0"
                                     Content="SAVE"
                                     Foreground="White"
@@ -216,28 +216,28 @@
                                     Margin="10"
                                     Grid.Column="0"
                                     Command="{Binding SaveCommand}">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Background" Value="#462AD8" />
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="#28AEED" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="150" Height="40"
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#462AD8" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#28AEED" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Width="150" Height="40"
                                                 CornerRadius="20"
                                                 Background="{TemplateBinding Background}">
-                                            <ContentPresenter VerticalAlignment="Center"
+                                                <ContentPresenter VerticalAlignment="Center"
                                                               HorizontalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <Button x:Name="btnCancel"
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <Button x:Name="btnCancel"
                                     BorderThickness="0"
                                     Content="CANCEL"
                                     Foreground="White"
@@ -247,31 +247,31 @@
                                     Margin="10"
                                     Grid.Column="1"
                                     Click="btnClose_Click">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Background" Value="#462AD8" />
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="#28AEED" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="150" Height="40"
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#462AD8" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#28AEED" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Width="150" Height="40"
                                                 CornerRadius="20"
                                                 Background="{TemplateBinding Background}">
-                                            <ContentPresenter VerticalAlignment="Center"
+                                                <ContentPresenter VerticalAlignment="Center"
                                                               HorizontalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </StackPanel>
-            </Grid>
-        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
     </Border>
 </UserControl>

@@ -92,11 +92,11 @@ namespace StoreManagement.Services
             Expression<Func<T, object>> orderBy = null,
             bool isDescending = false)
         {
-            IQueryable<T> query = _dbSet;
+            var query = _dbSet.AsQueryable();
 
             if (predicate != null)
             {
-                query = query.Where(predicate);
+                query = query.Where(predicate).AsQueryable();
             }
 
             if (orderBy != null)

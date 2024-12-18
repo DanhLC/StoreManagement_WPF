@@ -28,22 +28,21 @@ namespace StoreManagement.UI.Views
 
             DataContext = _viewModel;
 
-            _viewModel.ShowMessage += (title, message) =>
+            _viewModel.ShowMessage -= ShowMessageHandler;
+            _viewModel.ShowMessage += ShowMessageHandler;
+            _viewModel.ShowMessageConfirm -= ShowMessageConfirmHandler;
+            _viewModel.ShowMessageConfirm += ShowMessageConfirmHandler;
+
+            void ShowMessageHandler(string title, string message)
             {
                 MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
-            };
+            }
 
-            _viewModel.ShowMessageConfirm += (title, message) =>
+            bool ShowMessageConfirmHandler(string title, string message)
             {
-                var result = MessageBox.Show(
-                     message,
-                     title,
-                     MessageBoxButton.YesNo,
-                     MessageBoxImage.Question
-                 );
-
+                var result = MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 return result == MessageBoxResult.Yes;
-            };
+            }
 
             _viewModel.RequestClose += OnRequestClose;
             _viewModel.GoToHomePageRequested += OnGoToHomePageRequested;

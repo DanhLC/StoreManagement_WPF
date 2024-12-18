@@ -1,5 +1,6 @@
 ﻿using FontAwesome.Sharp;
 using StoreManagement.Core.Interfaces.Services;
+using StoreManagement.UI.Views;
 using System.Windows.Input;
 
 namespace StoreManagement.UI.ViewModels
@@ -60,6 +61,7 @@ namespace StoreManagement.UI.ViewModels
         public ICommand ShowDashboardCommand { get; }
         public ICommand ShowOrderViewCommand { get; }
         public ICommand ShowCustomerViewCommand { get; }
+        public ICommand ShowUserViewCommand { get; }
 
         #endregion
 
@@ -73,6 +75,7 @@ namespace StoreManagement.UI.ViewModels
             ShowDashboardCommand = new RelayCommand(_ => SetCurrentView("Dashboard"));
             ShowOrderViewCommand = new RelayCommand(_ => SetCurrentView("Order"));
             ShowCustomerViewCommand = new RelayCommand(_ => SetCurrentView("Customer"));
+            ShowUserViewCommand = new RelayCommand(_ => SetCurrentView("User"));
 
             if (!IsDefaultLoading) SetCurrentView("Dashboard");
         }
