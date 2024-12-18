@@ -6,7 +6,7 @@ using Xunit;
 
 namespace StoreManagement.UI.Tests.ViewModelTests
 {
-    public class UserViewModelTests
+    public class LoginViewModelTests
     {
         [Fact]
         public async Task LoginAsync_ShouldTriggerLoginSuccess_WhenCredentialsAreCorrect()
@@ -21,7 +21,7 @@ namespace StoreManagement.UI.Tests.ViewModelTests
             };
             mockUserRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(users);
 
-            var viewModel = new UserViewModel(mockUserRepo.Object, mockConfigRepo.Object, mockSessionManager.Object)
+            var viewModel = new LoginViewModel(mockUserRepo.Object, mockConfigRepo.Object, mockSessionManager.Object)
             {
                 Username = "testuser",
                 Password = "password123"
@@ -49,7 +49,7 @@ namespace StoreManagement.UI.Tests.ViewModelTests
             };
             mockUserRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(users);
 
-            var viewModel = new UserViewModel(mockUserRepo.Object, mockConfigRepo.Object, mockSessionManager.Object)
+            var viewModel = new LoginViewModel(mockUserRepo.Object, mockConfigRepo.Object, mockSessionManager.Object)
             {
                 Username = "wronguser",
                 Password = "wrongpassword"
