@@ -8,7 +8,7 @@ namespace StoreManagement.Services.Builders
     {
         private readonly IFormatService _formatService;
         private Customers _customer;
-        private readonly List<Customers> _customerList = new();
+        private List<Customers> _customerList = new();
 
         public CustomerBuilder(
             IFormatService formatService)
@@ -92,7 +92,9 @@ namespace StoreManagement.Services.Builders
 
         public List<Customers> BuildList()
         {
-            return _customerList;
+            var processedList = _customerList;
+            _customerList = new List<Customers>();
+            return processedList;
         }
 
         public void BuildForUpdate(Action<Customers> updateAction)

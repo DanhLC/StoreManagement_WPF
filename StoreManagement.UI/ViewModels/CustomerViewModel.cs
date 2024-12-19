@@ -4,16 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StoreManagement.Core;
 using StoreManagement.Core.Interfaces.Builders;
-using StoreManagement.Core.Interfaces.Formatting;
 using StoreManagement.Core.Interfaces.Services;
-using StoreManagement.Services.Builders;
-using System;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq.Expressions;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace StoreManagement.UI.ViewModels
 {
@@ -22,7 +16,6 @@ namespace StoreManagement.UI.ViewModels
         #region Fields
 
         private readonly IRepository<Customers> _customerRepository;
-        private readonly IFormatService _formatService;
         private readonly IViewFactory _viewFactory;
         private readonly IServiceProvider _serviceProvider;
         private readonly ICustomerBuilder _customerBuilder;
@@ -147,13 +140,11 @@ namespace StoreManagement.UI.ViewModels
 
         public CustomerViewModel(
             IRepository<Customers> customerRepository,
-            IFormatService formatService,
             IViewFactory viewFactory,
             IServiceProvider serviceProvider,
             ICustomerBuilder customerBuilder)
         {
             _customerRepository = customerRepository;
-            _formatService = formatService;
             _viewFactory = viewFactory;
             _serviceProvider = serviceProvider;
             _customerBuilder = customerBuilder;
@@ -217,19 +208,18 @@ namespace StoreManagement.UI.ViewModels
 
             foreach (var customer in customers)
             {
-                var processedCustomer = 
-                    _customerBuilder
+                _customerBuilder
                     .SetCurrentCustomer(customer)
                     .SetIdentityNumber(identityNo)
                     .SetBgColor(colors, random)
                     .SetCharacter()
                     .SetDebtAmountString(customer.DebtAmount)
-                    .Build();
+                    .AddToList();
 
-                Customers.Add(processedCustomer);
                 identityNo++;
             }
 
+            Customers = new ObservableCollection<Customers>(_customerBuilder.BuildList());
             TotalResults = totalCount;
             CurrentPage = pageIndex;
 
@@ -269,7 +259,7 @@ namespace StoreManagement.UI.ViewModels
             {
                 await _customerRepository.DeleteByIdAsync(customer.Id);
                 Customers.Remove(customer);
-                MessageBox.Show(string.Format("Customer: {0}, Address: {1} has been deleted.", customer.FullName, customer.Address));
+                ShowMessage.Invoke("Delete Confirmation", string.Format("Customer: {0}, Address: {1} has been deleted.", customer.FullName, customer.Address));
                 await LoadPageAsync(CurrentPage);
             }
         }

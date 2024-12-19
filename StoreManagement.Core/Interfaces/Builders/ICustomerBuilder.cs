@@ -11,7 +11,7 @@
         ICustomerBuilder SetDebtAmountString(decimal debtAmount);
         ICustomerBuilder SetIdentityNumber(int identityNo);
         ICustomerBuilder SetBgColor(string[] colors, Random random);
-            ICustomerBuilder SetCharacter();
+        ICustomerBuilder SetCharacter();
         Customers Build();
         ICustomerBuilder AddToList();
         List<Customers> BuildList();
