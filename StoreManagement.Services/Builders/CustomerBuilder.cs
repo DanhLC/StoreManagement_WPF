@@ -10,8 +10,7 @@ namespace StoreManagement.Services.Builders
         private Customers _customer;
         private List<Customers> _customerList = new();
 
-        public CustomerBuilder(
-            IFormatService formatService)
+        public CustomerBuilder(IFormatService formatService)
         {
             _formatService = formatService ?? throw new ArgumentNullException(nameof(formatService));
             _customer = new Customers();
@@ -19,7 +18,7 @@ namespace StoreManagement.Services.Builders
 
         public ICustomerBuilder SetCurrentCustomer(Customers customer)
         {
-            _customer = _formatService.DeepCopyUsingJson(customer);
+            _customer = _formatService.DeepCopyUsingJson(customer) ?? throw new ArgumentNullException(nameof(customer));
             return this;
         }
 
@@ -82,9 +81,10 @@ namespace StoreManagement.Services.Builders
         {
             _customerList.Add(_customer);
             _customer = new Customers();
-
             return this;
         }
+
+
         public Customers Build()
         {
             return _customer;
@@ -92,7 +92,7 @@ namespace StoreManagement.Services.Builders
 
         public List<Customers> BuildList()
         {
-            var processedList = _customerList;
+            var processedList = _customerList ?? new List<Customers>(); ;
             _customerList = new List<Customers>();
             return processedList;
         }

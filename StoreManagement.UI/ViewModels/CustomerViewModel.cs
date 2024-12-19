@@ -66,7 +66,7 @@ namespace StoreManagement.UI.ViewModels
             get => _currentPage;
             set
             {
-                if (_currentPage != value && (value > 0 && value < (TotalPages + 1)))
+                if (_currentPage != value && (value >= 0 && value < (TotalPages + 1)))
                 {
                     _currentPage = value;
                     OnPropertyChanged(nameof(CurrentPage));
@@ -181,20 +181,20 @@ namespace StoreManagement.UI.ViewModels
         {
             Expression<Func<Customers, bool>> predicate = customer =>
                 (string.IsNullOrWhiteSpace(CustomerName)
-                    || (EF.Functions.Like(customer.FullName, "%" + CustomerName.ToUpper() + "%")
-                        || EF.Functions.Like(customer.FullName, "%" + CustomerName.ToLower() + "%")
-                        || EF.Functions.Like(customer.FullName, "%" + CustomerName + "%")))
+                    || (EF.Functions.Like(customer.FullName, string.Format("%{0}%", CustomerName.ToUpper()))
+                        || EF.Functions.Like(customer.FullName, string.Format("%{0}%", CustomerName.ToLower()))
+                        || EF.Functions.Like(customer.FullName, string.Format("%{0}%", CustomerName))))
                 && (string.IsNullOrWhiteSpace(Phone) || EF.Functions.Like(customer.Phone, "%" + Phone + "%"))
                 && (string.IsNullOrWhiteSpace(CustomerAddress)
-                    || (EF.Functions.Like(customer.Address, "%" + CustomerAddress.ToUpper() + "%")
-                        || EF.Functions.Like(customer.Address, "%" + CustomerAddress.ToLower() + "%")
-                        || EF.Functions.Like(customer.Address, "%" + CustomerAddress + "%")));
+                    || (EF.Functions.Like(customer.Address, string.Format("%{0}%", CustomerName.ToUpper()))
+                        || EF.Functions.Like(customer.Address, string.Format("%{0}%", CustomerName.ToLower()))
+                        || EF.Functions.Like(customer.Address, string.Format("%{0}%", CustomerName.ToLower()))));
 
             var (customers, totalCount) = await _customerRepository.GetPagedAsync(
                  pageIndex: pageIndex,
                  pageSize: PageSize,
                  predicate: predicate,
-                 orderBy: customer => customer.Id,
+                 orderBy: (Expression<Func<Customers, object>>)(customer => customer.Id),
                  isDescending: true
              );
 
@@ -222,6 +222,8 @@ namespace StoreManagement.UI.ViewModels
             Customers = new ObservableCollection<Customers>(_customerBuilder.BuildList());
             TotalResults = totalCount;
             CurrentPage = pageIndex;
+
+            if (customers.Count() == 0) CurrentPage = 0;
 
             OnPropertyChanged(nameof(TotalResults));
             OnPropertyChanged(nameof(Customers));

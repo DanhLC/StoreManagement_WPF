@@ -8,13 +8,20 @@ namespace StoreManagement.UI.Tests.ViewModelTests
 {
     public class LoginViewModelTests
     {
+        private Mock<IRepository<Users>> mockUserRepo;
+        private Mock<IConfigRepository> mockConfigRepo;
+        private Mock<ISessionManager> mockSessionManager;
+
+        public LoginViewModelTests()
+        {
+            mockUserRepo = new Mock<IRepository<Users>>();
+            mockConfigRepo = new Mock<IConfigRepository>();
+            mockSessionManager = new Mock<ISessionManager>();
+        }
+
         [Fact]
         public async Task LoginAsync_ShouldTriggerLoginSuccess_WhenCredentialsAreCorrect()
         {
-            var mockUserRepo = new Mock<IRepository<Users>>();
-            var mockConfigRepo = new Mock<IConfigRepository>();
-            var mockSessionManager = new Mock<ISessionManager>();
-
             var users = new List<Users>
             {
                 new Users
@@ -27,6 +34,7 @@ namespace StoreManagement.UI.Tests.ViewModelTests
                     Email = "testuser@example.com"
                 }
             };
+
             mockUserRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(users);
 
             var viewModel = new LoginViewModel(mockUserRepo.Object, mockConfigRepo.Object, mockSessionManager.Object)
@@ -50,10 +58,6 @@ namespace StoreManagement.UI.Tests.ViewModelTests
         [Fact]
         public async Task LoginAsync_ShouldSetErrorMessage_WhenCredentialsAreIncorrect()
         {
-            var mockUserRepo = new Mock<IRepository<Users>>();
-            var mockConfigRepo = new Mock<IConfigRepository>();
-            var mockSessionManager = new Mock<ISessionManager>();
-
             var users = new List<Users>
             {
                 new Users { Username = "testuser", Password = "password123" }
@@ -75,10 +79,6 @@ namespace StoreManagement.UI.Tests.ViewModelTests
         [Fact]
         public async Task LoginAsync_ShouldSetErrorMessage_WhenUserNotFound()
         {
-            var mockUserRepo = new Mock<IRepository<Users>>();
-            var mockConfigRepo = new Mock<IConfigRepository>();
-            var mockSessionManager = new Mock<ISessionManager>();
-
             var users = new List<Users>(); 
             mockUserRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(users);
 
@@ -96,10 +96,6 @@ namespace StoreManagement.UI.Tests.ViewModelTests
         [Fact]
         public async Task ApplyQuickLoginAsync_ShouldLoginUserAutomatically_WhenQuickLoginIsEnabled()
         {
-            var mockUserRepo = new Mock<IRepository<Users>>();
-            var mockConfigRepo = new Mock<IConfigRepository>();
-            var mockSessionManager = new Mock<ISessionManager>();
-
             var users = new List<Users>
             {
                 new Users { Username = "testuser", Password = "password123" }
